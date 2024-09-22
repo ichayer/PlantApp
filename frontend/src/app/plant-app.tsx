@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Card, CardContent } from "src/components/ui/card"
 import { Button } from "src/components/ui/button"
 import { ScrollArea } from "src/components/ui/scroll-area"
@@ -17,7 +17,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "s
 import React from 'react';
 
 type Plant = {
-  id: number;
+  id: number | null;
   name: string;
   image: string;
   wateringFrequency: number;
@@ -25,50 +25,8 @@ type Plant = {
   wateringHistory: Date[];
 }
 
-const plantData: Plant[] = [
-  { 
-    id: 1, 
-    name: "Ficus", 
-    image: "/placeholder.svg?height=100&width=100", 
-    wateringFrequency: 7, 
-    lastWatered: new Date(2023, 5, 15),
-    wateringHistory: [
-      new Date(2023, 5, 15),
-      new Date(2023, 5, 8),
-      new Date(2023, 5, 1),
-      new Date(2023, 4, 24),
-    ]
-  },
-  { 
-    id: 2, 
-    name: "Cactus", 
-    image: "/placeholder.svg?height=100&width=100", 
-    wateringFrequency: 14, 
-    lastWatered: new Date(2023, 5, 10),
-    wateringHistory: [
-      new Date(2023, 5, 10),
-      new Date(2023, 4, 27),
-      new Date(2023, 4, 13),
-    ]
-  },
-  { 
-    id: 3, 
-    name: "Orquídea", 
-    image: "/placeholder.svg?height=100&width=100", 
-    wateringFrequency: 3, 
-    lastWatered: new Date(2023, 5, 14),
-    wateringHistory: [
-      new Date(2023, 5, 14),
-      new Date(2023, 5, 11),
-      new Date(2023, 5, 8),
-      new Date(2023, 5, 5),
-      new Date(2023, 5, 2),
-    ]
-  },
-]
-
 export default function MyPlants() {
-  const [plants, setPlants] = useState<Plant[]>(plantData)
+  const [plants, setPlants] = useState<Plant[]>([])
   const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null)
   const [isAddPlantOpen, setIsAddPlantOpen] = useState(false)
   const [newPlant, setNewPlant] = useState<Partial<Plant>>({
@@ -76,6 +34,27 @@ export default function MyPlants() {
     wateringFrequency: 7,
     image: '/placeholder.svg?height=100&width=100'
   })
+
+  useEffect(() => {
+    const fetchPlants = async () => {
+      try {
+        const response = await fetch('https://aws.com/plants')
+        const data = await response.json()
+        const transformedData: Plant[] = data.map((item: any) => ({
+          id: item.id,
+          name: item.name,
+          image: item.image || '/placeholder.svg', // Set placeholder in case no image is provided
+          wateringFrequency: item.wateringFrequency || 7,
+          lastWatered: new Date(item.lastWatered),
+          wateringHistory: item.wateringHistory.map((date: string) => new Date(date)),
+        }))
+        setPlants(transformedData)
+      } catch (error) {
+        console.error('Error retrieving plants:', error)
+      }
+    }
+    fetchPlants()
+  }, [])
 
   const calculateNextWatering = (plant: Plant) => {
     const nextWatering = new Date(plant.lastWatered)
@@ -108,20 +87,37 @@ export default function MyPlants() {
     setPlants(updatedPlants)
   }
 
-  const handleAddPlant = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleAddPlant = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const newId = Math.max(...plants.map(p => p.id)) + 1
     const plantToAdd: Plant = {
-      id: newId,
+      id: null,
       name: newPlant.name || '',
       image: newPlant.image || '/placeholder.svg?height=100&width=100',
       wateringFrequency: newPlant.wateringFrequency || 7,
       lastWatered: new Date(),
       wateringHistory: [new Date()]
     }
-    setPlants([...plants, plantToAdd])
-    setIsAddPlantOpen(false)
-    setNewPlant({ name: '', wateringFrequency: 7, image: '/placeholder.svg?height=100&width=100' })
+
+    try {
+      const response = await fetch('https://aws.com/plants', {
+        method: 'POST',
+        body: JSON.stringify(plantToAdd),
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (response.ok) {
+        const addedPlant = await response.json()
+        setPlants([...plants, addedPlant])
+        setIsAddPlantOpen(false)
+        setNewPlant({ name: '', wateringFrequency: 7, image: '/placeholder.svg?height=100&width=100'})
+      } else {
+        console.error('Error al agregar la planta:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+    }
   }
 
   return (
