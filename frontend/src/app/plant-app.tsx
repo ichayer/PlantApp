@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "src/components/ui/dialog"
-import { cn } from "src/lib/utils"
+import { cn, plantsPath } from "src/lib/utils"
 import { Input } from "src/components/ui/input"
 import { Label } from "src/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "src/components/ui/select"
@@ -38,7 +38,7 @@ export default function MyPlants() {
   useEffect(() => {
     const fetchPlants = async () => {
       try {
-        const response = await fetch('https://aws.com/plants')
+        const response = await fetch(plantsPath)
         const data = await response.json()
         const transformedData: Plant[] = data.map((item: any) => ({
           id: item.id,
@@ -77,15 +77,32 @@ export default function MyPlants() {
     return { status: 'Bien', color: 'text-green-500' }
   }
 
-  const handleWaterPlant = (plant: Plant) => {
-    const updatedPlants = plants.map(p => {
-      if (p.id === plant.id) {
-        return { ...p, lastWatered: new Date(), wateringHistory: [new Date(), ...p.wateringHistory] }
+  const handleWaterPlant = async (plantId: number) => {
+    try {
+      const response = await fetch(`${plantsPath}/${plantId}/waterings`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ date: new Date() }), // Otras propiedades si son necesarias
+      });
+  
+      if (response.ok) {
+        // Actualizar el estado de la planta con el nuevo historial de riego
+        setPlants(plants.map(p => {
+          if (p.id === plantId) {
+            return { ...p, lastWatered: new Date(), wateringHistory: [new Date(), ...p.wateringHistory] };
+          }
+          return p;
+        }));
+      } else {
+        // TODO: Mostrar mensaje de error? Re vivido
+        console.error('Error al registrar el riego:', response.statusText);
       }
-      return p
-    })
-    setPlants(updatedPlants)
-  }
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+    }
+  };
 
   const handleAddPlant = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -99,7 +116,7 @@ export default function MyPlants() {
     }
 
     try {
-      const response = await fetch('https://aws.com/plants', {
+      const response = await fetch(plantsPath, {
         method: 'POST',
         body: JSON.stringify(plantToAdd),
         headers: {
@@ -108,7 +125,7 @@ export default function MyPlants() {
       });
 
       if (response.ok) {
-        const addedPlant = await response.json()
+        const addedPlant = plantToAdd
         setPlants([...plants, addedPlant])
         setIsAddPlantOpen(false)
         setNewPlant({ name: '', wateringFrequency: 7, image: '/placeholder.svg?height=100&width=100'})
@@ -282,7 +299,7 @@ export default function MyPlants() {
                         variant="outline" 
                         size="sm"
                         className="text-blue-700 border-blue-300 hover:bg-blue-50"
-                        onClick={() => handleWaterPlant(plant)}
+                        onClick={() => handleWaterPlant(plant.id!)}
                       >
                         <Droplet className="h-4 w-4" />
                       </Button>
