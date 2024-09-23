@@ -42,7 +42,4 @@ module "rds_proxy" {
 
 module "secrets" {
   source = "./secrets"
-  db_name     = var.rds_db_name
-  db_username = var.rds_db_username
-  db_password = var.rds_db_password
 }
