@@ -1,6 +1,6 @@
 provider "aws" {
-  region     = var.vpc_region
-  profile = "default"
+  region                   = var.vpc_region
+  profile                  = "default"
   shared_credentials_files = ["${path.root}/aws_credentials"]
 }
 
@@ -25,4 +25,8 @@ module "rds" {
   security_group_id   =  module.security_groups.planty_db_sg_id
   db_username         =  var.db_username
   db_password         =  var.db_password
+}
+
+module "s3" {
+  source = "./s3"
 }

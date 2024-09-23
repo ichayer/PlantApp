@@ -34,5 +34,5 @@ variable "db_username" {
 variable "db_password" {
   description = "The password for the PostgreSQL database"
   type        = string
-  sensitive   = true  # Mark as sensitive to hide it in logs
+  sensitive   = true # Mark as sensitive to hide it in logs
 }
