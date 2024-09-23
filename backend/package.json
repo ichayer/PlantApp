@@ -1,0 +1,14 @@
+{
+  "name": "mlambda",
+  "version": "1.0.0",
+  "description": "Mlambda",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "postgresql-easy": "^1.3.0"
+  }
+}
