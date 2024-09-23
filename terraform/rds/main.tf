@@ -1,12 +1,15 @@
 resource "aws_db_instance" "planty_db" {
+    username          = var.db_username
+    password          = var.db_password 
+
     identifier        = "planty-db"
     engine            = "postgres"
     engine_version    = "16.3"
+    port              = 5432
     instance_class    = "db.t3.medium"
-    username          = "postgres"
-    password          = var.db_password 
     allocated_storage = 20
     multi_az          = true
+    apply_immediately = true
 
     # Storage settings
     storage_type      = "gp3"
