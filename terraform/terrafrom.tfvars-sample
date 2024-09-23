@@ -1,0 +1,11 @@
+# VPC Parameters
+vpc_region          = "us-east-1"
+vpc_cidr            = "10.0.0.0/16"
+lambda_subnet_count = 2
+rds_subnet_count    = 2
+vpc_name            = "planty-vpc"
+
+
+# BD Parameters
+db_username         = "user"
+db_password         = "mysupersecretpassword"

@@ -45,6 +45,15 @@ resource "aws_route_table_association" "lambda_subnet_assoc" {
   route_table_id = aws_route_table.lambda_private.id
 }
 
+resource "aws_db_subnet_group" "lambda_subnet_group" {
+  name       = "lambda-subnet-group"
+  subnet_ids = aws_subnet.lambda_subnet[*].id
+
+  tags = {
+    Name = "lambda-subnet-group"
+  }
+}
+
 ###### RDS Subnets
 
 resource "aws_route_table" "rds_private" {
@@ -66,4 +75,13 @@ resource "aws_route_table_association" "rds_subnet_assoc" {
   count          = var.rds_subnet_count
   subnet_id      = aws_subnet.rds_subnet[count.index].id
   route_table_id = aws_route_table.rds_private.id
+}
+
+resource "aws_db_subnet_group" "rds_subnet_group" {
+  name       = "rds-subnet-group"
+  subnet_ids = aws_subnet.rds_subnet[*].id
+
+  tags = {
+    Name = "rds-subnet-group"
+  }
 }
