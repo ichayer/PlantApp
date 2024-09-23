@@ -12,3 +12,8 @@ module "vpc" {
   lambda_subnet_count = 2
   rds_subnet_count    = 2
 }
+
+module "security_groups" {
+  source              = "./security_groups"
+  vpc_id              = module.vpc.vpc_id
+}
