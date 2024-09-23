@@ -9,7 +9,13 @@ To automate AWS infrastructure deployment using Terraform, follow these steps:
    - `aws_credentials`: File containing AWS credentials. Obtain these from your AWS account under "AWS Details" > "Show" next to AWS CLI.
    - `terraform.tfvars`: Configuration file with parameters. Adjust database-related settings as needed.
 
-2. Run Terraform commands
+2. Build the `frontend`
+    ```bash
+    > npm install
+    > npm run build
+    ```
+
+3. Run Terraform commands
 
     ```bash
     # Initialize Terraform to set up your working directory
@@ -30,4 +36,3 @@ To automate AWS infrastructure deployment using Terraform, follow these steps:
     # Destroy the infrastructure provisioned by Terraform
     > terraform destroy
     ```
-
