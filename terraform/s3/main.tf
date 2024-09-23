@@ -37,27 +37,28 @@ resource "aws_s3_bucket_policy" "frontend_bucket_policy" {
   })
 }
 
-resource "aws_s3_object" "bucket_files" {
-  bucket = aws_s3_bucket.frontend_bucket.bucket
+# TBD
+# resource "aws_s3_object" "bucket_files" {
+#   bucket = aws_s3_bucket.frontend_bucket.bucket
 
-  for_each = fileset("${path.root}/../frontend/build", "**")
-  key    = each.value
-  source = "${path.root}/../frontend/build/${each.value}"
-  etag = filemd5("${path.root}/../frontend/build/${each.value}")
-  content_type = lookup({
-      "html" = "text/html",
-      "json" = "application/json",
-      "css"  = "text/css",
-      "js"   = "application/javascript",
-      "jpg"  = "image/jpeg",
-      "png"  = "image/png",
-      "gif"  = "image/gif",
-      "txt"  = "text/plain",
-      "ico"  = "image/x-icon"
-    }, 
-    reverse(split(".", each.value))[0],
-    "binary/octet-stream" # Default type
-  )
+#   for_each = fileset("${path.root}/../frontend/build", "**")
+#   key    = each.value
+#   source = "${path.root}/../frontend/build/${each.value}"
+#   etag = filemd5("${path.root}/../frontend/build/${each.value}")
+#   content_type = lookup({
+#       "html" = "text/html",
+#       "json" = "application/json",
+#       "css"  = "text/css",
+#       "js"   = "application/javascript",
+#       "jpg"  = "image/jpeg",
+#       "png"  = "image/png",
+#       "gif"  = "image/gif",
+#       "txt"  = "text/plain",
+#       "ico"  = "image/x-icon"
+#     }, 
+#     reverse(split(".", each.value))[0],
+#     "binary/octet-stream" # Default type
+#   )
 
-  depends_on = [aws_s3_bucket_policy.frontend_bucket_policy]
-}
+#   depends_on = [aws_s3_bucket_policy.frontend_bucket_policy]
+# }
