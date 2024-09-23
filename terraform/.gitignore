@@ -1,5 +1,7 @@
-./terraform.tfvars
-./.terraform
-./.terraform.lock.hcl
-./aws_credentials
-./terraform.tfstate
+aws_credentials
+.terraform
+.terraform.lock.hcl
+.terraform.tfstate.lock.info
+terraform.tfstate
+terraform.tfstate.backup
+terraform.tfvars
