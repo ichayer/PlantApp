@@ -1,6 +1,6 @@
 # VPC Parameters
-variable "vpc_region" {
-  description = "The AWS region where the VPC will be created"
+variable "region" {
+  description = "The AWS region where the application will be deployed"
   type        = string
 }
 
@@ -14,25 +14,36 @@ variable "vpc_name" {
   type        = string
 }
 
-variable "lambda_subnet_count" {
+variable "vpc_lambda_subnet_count" {
   description = "The number of subnets for Lambda functions"
   type        = number
 }
 
-variable "rds_subnet_count" {
+variable "vpc_rds_subnet_count" {
   description = "The number of subnets for RDS instances"
   type        = number
 }
 
 # Database Parameters
-variable "db_username" {
+variable "rds_db_name" {
+  description = "The RDS name"
+  type        = string
+}
+
+variable "rds_db_username" {
   description = "The username for the PostgreSQL database"
   type        = string
   sensitive   = true
 }
 
-variable "db_password" {
+variable "rds_db_password" {
   description = "The password for the PostgreSQL database"
   type        = string
   sensitive   = true # Mark as sensitive to hide it in logs
+}
+
+# S3 parameters
+variable "s3_bucket_name" {
+  description = "S3 bucket name"
+  type        = string
 }

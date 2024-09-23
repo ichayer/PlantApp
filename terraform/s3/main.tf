@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "frontend_bucket" {
-  bucket = "itba-cloudcomputing-2024q1-g10"
+  bucket = var.bucket_name
   force_destroy = true
 }
 

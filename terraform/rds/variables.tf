@@ -1,16 +1,16 @@
-variable "vpc_region" {
-  description = "The AWS region where the VPC will be created"
-  type        = string
-}
-
 variable "subnet_group_name" {
   description = "The RDS subnets group name"
   type = string
 }
 
 variable "security_group_id" {
-  description = "The ID of the Planty DB security group"
+  description = "The id of the security group"
   type        = string
+}
+
+variable "db_name" {
+  description = "The RDS name"
+  type = string
 }
 
 variable "db_username" {

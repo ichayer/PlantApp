@@ -1,11 +1,15 @@
-# VPC Parameters
-vpc_region          = "us-east-1"
-vpc_cidr            = "10.0.0.0/16"
-lambda_subnet_count = 2
-rds_subnet_count    = 2
-vpc_name            = "planty-vpc"
+# AWS Region
+region = "us-east-1"
 
+# VPC Parameters
+vpc_cidr                = "10.0.0.0/16"
+vpc_name                = "planty-vpc"
+vpc_lambda_subnet_count = 2
+vpc_rds_subnet_count    = 2
 
 # BD Parameters
-db_username         = "user"
-db_password         = "mysupersecretpassword"
+rds_db_username = "username"
+rds_db_password = "supersecretpassword"
+
+# S3 parameters
+s3_bucket_name  = "itba-cloudcomputing-2024q1-g10"
