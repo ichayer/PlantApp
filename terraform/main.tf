@@ -34,10 +34,11 @@ module "s3" {
 
 module "rds_proxy" {
   source               = "./rds_proxy"
+  planty_db_identifier = module.rds.planty_db_identifier
   security_group_id    = module.security_groups.planty_db_proxy_sg_id
   vpc_subnet_ids       = module.vpc.rds_subnet_ids
   db_secret_arn        = module.secrets.planty_db_secret_arn
-  planty_db_identifier = module.rds.planty_db_identifier
+  labrole_arn          = var.rds_proxy_iam_role_arn
 }
 
 module "secrets" {

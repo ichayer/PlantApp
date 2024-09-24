@@ -7,10 +7,13 @@ vpc_name                = "planty-vpc"
 vpc_lambda_subnet_count = 2
 vpc_rds_subnet_count    = 2
 
-# BD Parameters
+# RDS Parameters
 rds_db_name     = "planty-db"
 rds_db_username = "postgres"
 rds_db_password = "postgres"
+
+# RDS Proxy Parameters
+rds_proxy_iam_role_arn = goto IAM > Roles and find the ARN of the role called LabRole (e.g "arn:aws:iam::11111111111:role/LabRole")
 
 # S3 parameters
 s3_bucket_name  = "itba-cloudcomputing-2024q1-g10"

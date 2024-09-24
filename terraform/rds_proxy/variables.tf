@@ -13,7 +13,13 @@ variable "db_secret_arn" {
   type        = string
 }
 
+variable "labrole_arn" {
+  description = "LabRole ARN. It can be found in IAM > Roles"
+  type = string
+  sensitive = true
+}
+
 variable "planty_db_identifier" {
-  description = "The identifier of the Database"
+  description = "The identifier of the RDS database"
   type        = string
 }

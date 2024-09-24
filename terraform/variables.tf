@@ -1,9 +1,10 @@
-# VPC Parameters
+# Region
 variable "region" {
   description = "The AWS region where the application will be deployed"
   type        = string
 }
 
+# VPC Parameters
 variable "vpc_cidr" {
   description = "The CIDR block for the VPC"
   type        = string
@@ -24,7 +25,7 @@ variable "vpc_rds_subnet_count" {
   type        = number
 }
 
-# Database Parameters
+# RDS Parameters
 variable "rds_db_name" {
   description = "The RDS name"
   type        = string
@@ -40,6 +41,13 @@ variable "rds_db_password" {
   description = "The password for the PostgreSQL database"
   type        = string
   sensitive   = true # Mark as sensitive to hide it in logs
+}
+
+# RDS Proxy Parameters
+variable "rds_proxy_iam_role_arn" {
+  description = "LabRole ARN. It can be found in IAM > Roles"
+  type        = string
+  sensitive   = true
 }
 
 # S3 parameters

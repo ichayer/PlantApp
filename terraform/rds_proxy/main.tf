@@ -4,7 +4,7 @@ resource "aws_db_proxy" "planty_db_proxy" {
   engine_family          = "POSTGRESQL"
   idle_client_timeout    = 1800
   require_tls            = true
-  role_arn               = "arn:aws:iam::592199025535:role/LabRole"
+  role_arn               = var.labrole_arn
   vpc_security_group_ids = [var.security_group_id]
   vpc_subnet_ids         = var.vpc_subnet_ids
 
