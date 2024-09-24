@@ -33,14 +33,16 @@ module "s3" {
 }
 
 module "rds_proxy" {
-  source            = "./rds_proxy"
-  security_group_id = module.security_groups.planty_db_proxy_sg_id
-  vpc_subnet_ids    = module.vpc.rds_subnet_ids
-  db_secret_arn     = module.secrets.planty_db_secret_arn
+  source               = "./rds_proxy"
+  security_group_id    = module.security_groups.planty_db_proxy_sg_id
+  vpc_subnet_ids       = module.vpc.rds_subnet_ids
+  db_secret_arn        = module.secrets.planty_db_secret_arn
   planty_db_identifier = module.rds.planty_db_identifier
 }
 
 module "secrets" {
-  source = "./secrets"
+  source      = "./secrets"
   db_name     = var.rds_db_name
+  db_username = var.rds_db_username
+  db_password = var.rds_db_password
 }

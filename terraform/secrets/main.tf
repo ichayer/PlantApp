@@ -1,14 +1,13 @@
 resource "aws_secretsmanager_secret" "planty_db_secret" {
-  name        = "planty-db-secret"
-  description = "RDS credentials for planty-db"
+  name        = "${var.db_name}-secret"
+  description = "RDS credentials for ${var.db_name}"
 }
 
 resource "aws_secretsmanager_secret_version" "planty_db_secret_version" {
   secret_id = aws_secretsmanager_secret.planty_db_secret.id
 
   secret_string = jsonencode({
-    username = "postgres"
-    password = "postgres"
-    db_name  = var.db_name
+    username = var.db_username
+    password = var.db_password
   })
 }
