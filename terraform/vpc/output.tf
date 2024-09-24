@@ -30,5 +30,5 @@ output "lambda_subnet_group_name" {
 
 output "lambda_subnet_ids" {
   value       = aws_db_subnet_group.lambda_subnet_group.subnet_ids
-  description = "The IDs of the Lambda subnets"
+  description = "The IDs of the lambda subnets"
 }
