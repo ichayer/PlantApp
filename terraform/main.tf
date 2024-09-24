@@ -49,20 +49,20 @@ module "secrets" {
 }
 
 module "lambda" {
-  source = "./lambda"
+  source            = "./lambda"
   lambda_subnet_ids = module.vpc.lambda_subnet_ids
   security_group_id = module.security_groups.lambdas_sg_id
-  labrole_arn          = var.rds_proxy_iam_role_arn
+  labrole_arn       = var.iam_role_arn
 }
 
 module "api_gw" {
-  source = "./api_gw"
-  lambda_plants_function_name = module.lambda.plants_function_name 
-  lambda_plantsById_function_name = module.lambda.plantsById_function_name
-  lambda_plantsByIdWaterings_function_name = module.lambda.plantsByIdWaterings_function_name 
-  plants_invoke_arn = module.lambda.plants_invoke_arn
-  plantsById_invoke_arn = module.lambda.plantsById_invoke_arn
-  plantsByIdWaterings_invoke_arn = module.lambda.plantsByIdWaterings_invoke_arn
+  source                                   = "./api_gw"
+  lambda_plants_function_name              = module.lambda.plants_function_name
+  lambda_plantsById_function_name          = module.lambda.plantsById_function_name
+  lambda_plantsByIdWaterings_function_name = module.lambda.plantsByIdWaterings_function_name
+  plants_invoke_arn                        = module.lambda.plants_invoke_arn
+  plantsById_invoke_arn                    = module.lambda.plantsById_invoke_arn
+  plantsByIdWaterings_invoke_arn           = module.lambda.plantsByIdWaterings_invoke_arn
 }
 
 
