@@ -38,7 +38,7 @@ module "rds_proxy" {
   security_group_id    = module.security_groups.rds_proxy_sg_id
   vpc_subnet_ids       = module.vpc.rds_subnet_ids
   db_secret_arn        = module.secrets.rds_secret_arn
-  labrole_arn          = var.rds_proxy_iam_role_arn
+  labrole_arn          = var.iam_role_arn
 }
 
 module "secrets" {
@@ -46,4 +46,15 @@ module "secrets" {
   db_name     = var.rds_db_name
   db_username = var.rds_db_username
   db_password = var.rds_db_password
+}
+
+module "lambda_sql" {
+  source                   = "./lambda_sql"
+  proxy_host               = module.rds_proxy.address
+  db_username              = var.rds_db_username
+  db_password              = var.rds_db_password
+  db_port                  = module.rds.port
+  labrole_arn              = var.iam_role_arn
+  subnet_ids               = module.vpc.lambda_subnet_ids
+  lambda_security_group_id = module.security_groups.lambdas_sg_id
 }
