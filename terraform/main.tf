@@ -21,7 +21,7 @@ module "security_groups" {
 module "rds" {
   source            = "./rds"
   subnet_group_name = module.vpc.rds_subnet_group_name
-  security_group_id = module.security_groups.planty_db_sg_id
+  security_group_id = module.security_groups.rds_sg_id
   db_name           = var.rds_db_name
   db_username       = var.rds_db_username
   db_password       = var.rds_db_password
@@ -34,10 +34,10 @@ module "s3" {
 
 module "rds_proxy" {
   source               = "./rds_proxy"
-  planty_db_identifier = module.rds.planty_db_identifier
-  security_group_id    = module.security_groups.planty_db_proxy_sg_id
+  planty_db_identifier = module.rds.id
+  security_group_id    = module.security_groups.rds_proxy_sg_id
   vpc_subnet_ids       = module.vpc.rds_subnet_ids
-  db_secret_arn        = module.secrets.planty_db_secret_arn
+  db_secret_arn        = module.secrets.rds_secret_arn
   labrole_arn          = var.rds_proxy_iam_role_arn
 }
 
