@@ -1,0 +1,14 @@
+{
+  "name": "SQLlambda",
+  "version": "1.0.0",
+  "description": "SQLlambda",
+  "main": "lambda_sql.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "postgresql-easy": "^1.3.0"
+  }
+}
