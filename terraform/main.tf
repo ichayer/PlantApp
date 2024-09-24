@@ -43,7 +43,7 @@ module "rds_proxy" {
 
 module "secrets" {
   source      = "./secrets"
-  db_name     = var.rds_db_name
+  secret_name = var.rds_secret_name
   db_username = var.rds_db_username
   db_password = var.rds_db_password
 }
@@ -65,7 +65,6 @@ module "api_gw" {
   plantsByIdWaterings_invoke_arn           = module.lambda.plantsByIdWaterings_invoke_arn
 }
 
-
 module "lambda_sql" {
   source                   = "./lambda_sql"
   proxy_host               = module.rds_proxy.address
@@ -75,4 +74,8 @@ module "lambda_sql" {
   labrole_arn              = var.iam_role_arn
   subnet_ids               = module.vpc.lambda_subnet_ids
   lambda_security_group_id = module.security_groups.lambdas_sg_id
+}
+
+module "dynamo" {
+  source = "./dynamo"
 }

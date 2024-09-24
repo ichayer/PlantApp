@@ -43,6 +43,12 @@ variable "rds_db_password" {
   sensitive   = true # Mark as sensitive to hide it in logs
 }
 
+variable "rds_secret_name" {
+  description = "The RDS Proxy secret name"
+  type        = string
+  sensitive   = true # Mark as sensitive to hide it in logs
+}
+
 # IAM LabRole ARN
 variable "iam_role_arn" {
   description = "IAM LabRole ARN. It can be found in IAM > Roles"

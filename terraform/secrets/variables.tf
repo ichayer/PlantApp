@@ -1,6 +1,7 @@
-variable "db_name" {
-  description = "The RDS database name"
-  type = string
+variable "secret_name" {
+  description = "Secret name"
+  type        = string
+  sensitive   = true
 }
 
 variable "db_username" {

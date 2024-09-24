@@ -1,6 +1,6 @@
 resource "aws_secretsmanager_secret" "rds_secret" {
-  name        = "${var.db_name}-secret"
-  description = "RDS credentials for ${var.db_name}"
+  name        = "${var.secret_name}-secret"
+  description = "Secret for RDS"
 }
 
 resource "aws_secretsmanager_secret_version" "rds_secret_version" {

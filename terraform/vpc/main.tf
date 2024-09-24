@@ -1,4 +1,4 @@
-##### VPC and AZs
+##### VPC
 
 resource "aws_vpc" "plantapp_vpc" {
   cidr_block = var.vpc_cidr
@@ -9,20 +9,10 @@ resource "aws_vpc" "plantapp_vpc" {
   }
 }
 
-resource "aws_vpc_endpoint" "s3_gateway" {
-  vpc_id       = aws_vpc.plantapp_vpc.id
-  service_name = "com.amazonaws.${var.vpc_region}.s3"
-  route_table_ids = [aws_vpc.plantapp_vpc.default_route_table_id]
-
-  tags = {
-    Name = "${var.vpc_name}-s3-gateway"
-  }
-}
+###### Lambda Subnets
 
 # Data source to retrieve the available availability zones in the region
 data "aws_availability_zones" "available" {}
-
-###### Lambda Subnets
 
 resource "aws_route_table" "lambda_private" {
   vpc_id = aws_vpc.plantapp_vpc.id
@@ -83,5 +73,28 @@ resource "aws_db_subnet_group" "rds_subnet_group" {
 
   tags = {
     Name = "rds-subnet-group"
+  }
+}
+
+##### VPC endpoints
+resource "aws_vpc_endpoint" "s3_gateway" {
+  vpc_id       = aws_vpc.plantapp_vpc.id
+  service_name = "com.amazonaws.${var.vpc_region}.s3"
+  route_table_ids = [aws_vpc.plantapp_vpc.default_route_table_id]
+
+  tags = {
+    Name = "${var.vpc_name}-s3-gateway"
+  }
+}
+
+resource "aws_vpc_endpoint" "dynamodb_endpoint" {
+  vpc_id            = aws_vpc.plantapp_vpc.id
+  service_name      = "com.amazonaws.${var.vpc_region}.dynamodb"
+  vpc_endpoint_type = "Gateway"
+
+  route_table_ids = [aws_vpc.plantapp_vpc.default_route_table_id]
+
+  tags = {
+    Name = "dynamodb-endpoint"
   }
 }
