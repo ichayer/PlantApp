@@ -18,6 +18,12 @@ variable "db_port" {
   type        = string
 }
 
+variable "labrole_arn" {
+  description = "LabRole ARN. It can be found in IAM > Roles"
+  type = string
+  sensitive = true
+}
+
 variable "subnet_ids" {
   description = "The list of subnet IDs where the Lambda function will be deployed"
   type        = list(string)
@@ -26,10 +32,4 @@ variable "subnet_ids" {
 variable "lambda_security_group_id" {
   description = "The security group ID associated with the Lambda function"
   type        = string
-}
-
-variable "labrole_arn" {
-  description = "LabRole ARN. It can be found in IAM > Roles"
-  type = string
-  sensitive = true
 }

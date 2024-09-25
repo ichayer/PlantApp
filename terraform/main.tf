@@ -50,9 +50,13 @@ module "secrets" {
 
 module "lambda" {
   source            = "./lambda"
+  proxy_host        = module.rds_proxy.address
+  db_username       = var.rds_db_username
+  db_password       = var.rds_db_password
+  db_port           = module.rds.port
+  labrole_arn       = var.iam_role_arn
   lambda_subnet_ids = module.vpc.lambda_subnet_ids
   security_group_id = module.security_groups.lambdas_sg_id
-  labrole_arn       = var.iam_role_arn
 }
 
 module "api_gw" {
