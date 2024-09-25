@@ -3,11 +3,11 @@ const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const { QueryCommand, PutCommand, DynamoDBDocumentClient } = require("@aws-sdk/lib-dynamodb");
 
 const pg = new PgConnection({
-    host: process.env.DATABASE_HOST,
+    host: process.env.DB_HOST,
     port: 5432,
     database: "postgres",
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
     ssl: true,
 });
 
