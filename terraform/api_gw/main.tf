@@ -67,7 +67,7 @@ resource "aws_lambda_permission" "plants_lambda_permission" {
   action        = "lambda:InvokeFunction"  
   function_name = var.lambda_plants_function_name  
   principal     = "apigateway.amazonaws.com"  
-  source_arn    = aws_apigatewayv2_api.planty_http_api.arn  
+  source_arn    = "${aws_apigatewayv2_api.planty_http_api.execution_arn}/*/*"  
 }
 
 resource "aws_lambda_permission" "plantsById_lambda_permission" {  
@@ -75,7 +75,7 @@ resource "aws_lambda_permission" "plantsById_lambda_permission" {
   action        = "lambda:InvokeFunction"  
   function_name = var.lambda_plantsById_function_name 
   principal     = "apigateway.amazonaws.com"  
-  source_arn    = aws_apigatewayv2_api.planty_http_api.arn  
+  source_arn    = "${aws_apigatewayv2_api.planty_http_api.execution_arn}/*/*"  
 }
 
 resource "aws_lambda_permission" "plantsByIdWaterings" {  
@@ -83,5 +83,5 @@ resource "aws_lambda_permission" "plantsByIdWaterings" {
   action        = "lambda:InvokeFunction"  
   function_name = var.lambda_plantsByIdWaterings_function_name
   principal     = "apigateway.amazonaws.com"  
-  source_arn    = aws_apigatewayv2_api.planty_http_api.arn  
+  source_arn    = "${aws_apigatewayv2_api.planty_http_api.execution_arn}/*/*"  
 }
