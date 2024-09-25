@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "src/components/ui/dialog"
-import { cn, plantsPath } from "src/lib/utils"
+import { cn, placeHolderImagePath, plantsPath } from "src/lib/utils"
 import { Input } from "src/components/ui/input"
 import { Label } from "src/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "src/components/ui/select"
@@ -39,7 +39,7 @@ export default function MyPlants() {
   const [newPlant, setNewPlant] = useState<Partial<Plant>>({
     name: '',
     wateringFrequency: 7,
-    image: '/placeholder.svg?height=100&width=100'
+    image: placeHolderImagePath
   })
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export default function MyPlants() {
         const transformedData: Plant[] = data.map((item: any) => ({
           id: item.plantId,
           name: item.name,
-          image: item.image || '/placeholder.svg', // Set placeholder in case no image is provided
+          image: placeHolderImagePath, // Set placeholder in case no image is provided
           wateringFrequency: item.wateringFrequency || 7,
           lastWatered: new Date(item.lastWatered),
           wateringHistory: item.waterings.map((date: string) => new Date(date)),
@@ -116,7 +116,7 @@ export default function MyPlants() {
     event.preventDefault()
     const plantToAdd: PlantPost = {
       name: newPlant.name || '',
-      image: newPlant.image || '/placeholder.svg?height=100&width=100',
+      image: newPlant.image || placeHolderImagePath,
       description: "default",
       waterFrequencyDays: newPlant.wateringFrequency || 7
     }
@@ -136,7 +136,7 @@ export default function MyPlants() {
         const addedPlant: Plant = {
           id: data.plantId,
           name: newPlant.name || '',
-          image: newPlant.image || '/placeholder.svg?height=100&width=100',
+          image: newPlant.image || placeHolderImagePath,
           wateringFrequency: newPlant.wateringFrequency || 7,
           wateringHistory: [],
           lastWatered: new Date()
@@ -144,7 +144,7 @@ export default function MyPlants() {
 
         setPlants([...plants, addedPlant])
         setIsAddPlantOpen(false)
-        setNewPlant({ name: '', wateringFrequency: 7, image: '/placeholder.svg?height=100&width=100'})
+        setNewPlant({ name: '', wateringFrequency: 7, image: placeHolderImagePath})
       } else {
         console.error('Error al agregar la planta:', response.statusText);
       }
@@ -207,7 +207,7 @@ export default function MyPlants() {
                 <div className="flex items-center space-x-2">
                   <div className="w-24 h-24 border-2 border-dashed border-green-300 rounded-lg flex items-center justify-center overflow-hidden bg-green-50">
                     {newPlant.image && (
-                      <img src={newPlant.image} alt="Nueva planta" className="w-full h-full object-cover" />
+                      <img src={newPlant.image} alt="Nueva planta" className="w-300 h-300 object-cover" />
                     )}
                   </div>
                   <div className="space-y-2">
@@ -253,7 +253,9 @@ export default function MyPlants() {
           return (
             <Card key={plant.id} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
               <CardContent className="p-0">
-                <img src={plant.image} alt={plant.name} className="w-full h-48 object-cover" />
+                <div className="flex items-center justify-center p-0">
+                  <img src={plant.image} alt={plant.name} className="w-20 h-20 object-cover" />
+                </div>
                 <div className="p-4">
                   <h2 className="text-xl font-semibold text-green-800 mb-2">{plant.name}</h2>
                   <div className="flex justify-between items-center text-sm text-green-600 mb-4">
@@ -287,7 +289,8 @@ export default function MyPlants() {
                             <DialogTitle className="text-2xl font-bold text-green-800">{selectedPlant?.name}</DialogTitle>
                           </DialogHeader>
                           <div className="mt-4">
-                            <img src={selectedPlant?.image} alt={selectedPlant?.name} className="w-full h-48 object-cover rounded-lg mb-4" />
+                            <img src={selectedPlant?.image} alt={selectedPlant?.name} className="w-20 h-20 object-cover rounded-lg mb-4" />
+        
                             <div className="space-y-2 text-green-700">
                               <p className="flex items-center">
                                 <Droplet className="mr-2 h-4 w-4" />
