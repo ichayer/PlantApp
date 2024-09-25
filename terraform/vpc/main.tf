@@ -92,7 +92,7 @@ resource "aws_vpc_endpoint" "dynamodb_endpoint" {
   service_name      = "com.amazonaws.${var.vpc_region}.dynamodb"
   vpc_endpoint_type = "Gateway"
 
-  route_table_ids = [aws_vpc.plantapp_vpc.default_route_table_id]
+  route_table_ids = [aws_route_table.lambda_private.id]
 
   tags = {
     Name = "dynamodb-endpoint"
