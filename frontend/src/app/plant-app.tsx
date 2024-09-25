@@ -25,6 +25,13 @@ type Plant = {
   wateringHistory: Date[];
 }
 
+type PlantPost = {
+  name: string;
+  image: string;
+  waterFrequencyDays: number;
+  description: string;
+}
+
 export default function MyPlants() {
   const [plants, setPlants] = useState<Plant[]>([])
   const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null)
@@ -41,12 +48,12 @@ export default function MyPlants() {
         const response = await fetch(plantsPath)
         const data = await response.json()
         const transformedData: Plant[] = data.map((item: any) => ({
-          id: item.id,
+          id: item.plantId,
           name: item.name,
           image: item.image || '/placeholder.svg', // Set placeholder in case no image is provided
           wateringFrequency: item.wateringFrequency || 7,
           lastWatered: new Date(item.lastWatered),
-          wateringHistory: item.wateringHistory.map((date: string) => new Date(date)),
+          wateringHistory: item.waterings.map((date: string) => new Date(date)),
         }))
         setPlants(transformedData)
       } catch (error) {
@@ -80,11 +87,12 @@ export default function MyPlants() {
   const handleWaterPlant = async (plantId: number) => {
     try {
       const response = await fetch(`${plantsPath}/${plantId}/waterings`, {
+        mode: 'no-cors',
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ date: new Date() }), // Otras propiedades si son necesarias
+        body: JSON.stringify({ description: "Hola" }), // Otras propiedades si son necesarias
       });
   
       if (response.ok) {
@@ -106,17 +114,16 @@ export default function MyPlants() {
 
   const handleAddPlant = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const plantToAdd: Plant = {
-      id: null,
+    const plantToAdd: PlantPost = {
       name: newPlant.name || '',
       image: newPlant.image || '/placeholder.svg?height=100&width=100',
-      wateringFrequency: newPlant.wateringFrequency || 7,
-      lastWatered: new Date(),
-      wateringHistory: [new Date()]
+      description: "default",
+      waterFrequencyDays: newPlant.wateringFrequency || 7
     }
 
     try {
       const response = await fetch(plantsPath, {
+        mode: 'no-cors',
         method: 'POST',
         body: JSON.stringify(plantToAdd),
         headers: {
@@ -125,7 +132,16 @@ export default function MyPlants() {
       });
 
       if (response.ok) {
-        const addedPlant = plantToAdd
+        const data = await response.json()
+        const addedPlant: Plant = {
+          id: data.plantId,
+          name: newPlant.name || '',
+          image: newPlant.image || '/placeholder.svg?height=100&width=100',
+          wateringFrequency: newPlant.wateringFrequency || 7,
+          wateringHistory: [],
+          lastWatered: new Date()
+        }
+
         setPlants([...plants, addedPlant])
         setIsAddPlantOpen(false)
         setNewPlant({ name: '', wateringFrequency: 7, image: '/placeholder.svg?height=100&width=100'})

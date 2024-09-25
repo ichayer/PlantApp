@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const apiPath = "https://p303nrh3fb.execute-api.us-east-1.amazonaws.com/default"
+export const apiPath = "https://21bakowg31.execute-api.us-east-1.amazonaws.com"
 export const plantsPath = `${apiPath}/plants`
 
 // const plantData = [
