@@ -24,7 +24,7 @@ resource "aws_route_table" "lambda_private" {
 resource "aws_subnet" "lambda_subnet" {
   count             = var.lambda_subnet_count
   vpc_id            = aws_vpc.plantapp_vpc.id
-  cidr_block        = "10.0.${count.index}.0/24"
+  cidr_block        = cidrsubnet("10.0.0.0/16", 8, count.index)
   availability_zone = element(data.aws_availability_zones.available.names, count.index)
   map_public_ip_on_launch = false
 }
@@ -56,7 +56,7 @@ resource "aws_route_table" "rds_private" {
 resource "aws_subnet" "rds_subnet" {
   count             = var.rds_subnet_count
   vpc_id            = aws_vpc.plantapp_vpc.id
-  cidr_block        = "10.0.10${count.index}.0/24"
+  cidr_block        = cidrsubnet("10.0.0.0/16", 8, count.index + 100)
   availability_zone = element(data.aws_availability_zones.available.names, count.index)
   map_public_ip_on_launch = false
 }
