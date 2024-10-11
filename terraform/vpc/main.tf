@@ -12,7 +12,9 @@ resource "aws_vpc" "plantapp_vpc" {
 ###### Lambda Subnets
 
 # Data source to retrieve the available availability zones in the region
-data "aws_availability_zones" "available" {}
+data "aws_availability_zones" "available" {
+    state = "available"
+}
 
 resource "aws_route_table" "lambda_private" {
   vpc_id = aws_vpc.plantapp_vpc.id
