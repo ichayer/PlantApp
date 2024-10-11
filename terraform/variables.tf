@@ -49,13 +49,6 @@ variable "rds_secret_name" {
   sensitive   = true # Mark as sensitive to hide it in logs
 }
 
-# IAM LabRole ARN
-variable "iam_role_arn" {
-  description = "IAM LabRole ARN. It can be found in IAM > Roles"
-  type        = string
-  sensitive   = true
-}
-
 # S3 parameters
 variable "s3_bucket_name" {
   description = "S3 bucket name"

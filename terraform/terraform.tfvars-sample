@@ -13,8 +13,5 @@ rds_db_username = "postgres"
 rds_db_password = "postgres"
 rds_secret_name = MUST BE UNIQUE FOR EVERYONE!!!! (e.g. "planty-db-secret-yourname")
 
-# IAM LabRole ARN
-iam_role_arn = goto IAM > Roles and find the ARN of the role called LabRole (e.g "arn:aws:iam::11111111111:role/LabRole")
-
 # S3 parameters
 s3_bucket_name  = MUST BE UNIQUE FOR EVERYONE!!!! (e.g. "itba-cloudcomputing-2024q1-g10-yourname")

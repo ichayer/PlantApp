@@ -4,6 +4,10 @@ provider "aws" {
   shared_credentials_files = ["${path.root}/aws_credentials"]
 }
 
+data "aws_iam_role" "labrole" {
+  name = "LabRole"
+}
+
 module "vpc" {
   source              = "./vpc"
   vpc_region          = var.region
@@ -38,7 +42,7 @@ module "rds_proxy" {
   security_group_id    = module.security_groups.rds_proxy_sg_id
   vpc_subnet_ids       = module.vpc.rds_subnet_ids
   db_secret_arn        = module.secrets.rds_secret_arn
-  labrole_arn          = var.iam_role_arn
+  labrole_arn          = data.aws_iam_role.labrole.arn
 }
 
 module "secrets" {
@@ -54,7 +58,7 @@ module "lambda" {
   db_username       = var.rds_db_username
   db_password       = var.rds_db_password
   db_port           = module.rds.port
-  labrole_arn       = var.iam_role_arn
+  labrole_arn       = data.aws_iam_role.labrole.arn
   lambda_subnet_ids = module.vpc.lambda_subnet_ids
   security_group_id = module.security_groups.lambdas_sg_id
 }
@@ -75,7 +79,7 @@ module "lambda_sql" {
   db_username              = var.rds_db_username
   db_password              = var.rds_db_password
   db_port                  = module.rds.port
-  labrole_arn              = var.iam_role_arn
+  labrole_arn              = data.aws_iam_role.labrole.arn
   subnet_ids               = module.vpc.lambda_subnet_ids
   lambda_security_group_id = module.security_groups.lambdas_sg_id
 }
