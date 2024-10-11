@@ -76,14 +76,7 @@ async function createPlant(event) {
     };
 }
 
-async function handler(event) {
-    switch (event.requestContext.http.method) {
-        case "GET": return await getPlants(event);
-        case "POST": return await createPlant(event);
-        default: return { statusCode: 405, body: "Method not allowed" };
-    }
-}
-
 module.exports = {
-    handler: handler
+    getPlants: getPlants,
+    createPlant: createPlant,
 }

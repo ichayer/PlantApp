@@ -64,14 +64,7 @@ async function deletePlantById(event) {
     };
 }
 
-async function handler(event) {
-    switch (event.requestContext.http.method) {
-        case "GET": return await getPlantById(event);
-        case "DELETE": return await deletePlantById(event);
-        default: return { statusCode: 405, body: "Method not allowed" };
-    }
-}
-
 module.exports = {
-    handler: handler
+    getPlantById: getPlantById,
+    deletePlantById: deletePlantById,
 }

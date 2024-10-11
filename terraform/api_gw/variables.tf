@@ -1,29 +1,47 @@
-variable "lambda_plants_function_name" {
-  type        = string
-  description = "Name of the Lambda function for /plants"
+variable "get_plants" {
+  type = object({
+    function_name = string
+    invoke_arn    = string
+  })
+  description = "The function name and invocation ARN of the GET /plants lambda"
 }
 
-variable "lambda_plantsById_function_name" {
-  type        = string
-  description = "Name of the Lambda function for /plants/{plantId}"
+variable "create_plant" {
+  type = object({
+    function_name = string
+    invoke_arn    = string
+  })
+  description = "The function name and invocation ARN of the POST /plants lambda"
 }
 
-variable "lambda_plantsByIdWaterings_function_name" {
-  type        = string
-  description = "Name of the Lambda function for /plants/{plantId}/waterings"
+variable "get_plant_by_id" {
+  type = object({
+    function_name = string
+    invoke_arn    = string
+  })
+  description = "The function name and invocation ARN of the GET /plants/{id} lambda"
 }
 
-variable "plants_invoke_arn" {
-  type        = string
-  description = "Invoke ARN of the Lambda function for /plants"
+variable "delete_plant_by_id" {
+  type = object({
+    function_name = string
+    invoke_arn    = string
+  })
+  description = "The function name and invocation ARN of the DELETE /plants/{id} lambda"
 }
 
-variable "plantsById_invoke_arn" {
-  type        = string
-  description = "Invoke ARN of the Lambda function for /plants/{plantId}"
+variable "get_plant_waterings" {
+  type = object({
+    function_name = string
+    invoke_arn    = string
+  })
+  description = "The function name and invocation ARN of the GET /plants/{id}/waterings lambda"
 }
 
-variable "plantsByIdWaterings_invoke_arn" {
-  type        = string
-  description = "Invoke ARN of the Lambda function for /plants/{plantId}/waterings"
+variable "create_plant_watering" {
+  type = object({
+    function_name = string
+    invoke_arn    = string
+  })
+  description = "The function name and invocation ARN of the POST /plants/{id}/waterings lambda"
 }

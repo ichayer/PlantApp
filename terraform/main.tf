@@ -60,13 +60,13 @@ module "lambda" {
 }
 
 module "api_gw" {
-  source                                   = "./api_gw"
-  lambda_plants_function_name              = module.lambda.plants_function_name
-  lambda_plantsById_function_name          = module.lambda.plantsById_function_name
-  lambda_plantsByIdWaterings_function_name = module.lambda.plantsByIdWaterings_function_name
-  plants_invoke_arn                        = module.lambda.plants_invoke_arn
-  plantsById_invoke_arn                    = module.lambda.plantsById_invoke_arn
-  plantsByIdWaterings_invoke_arn           = module.lambda.plantsByIdWaterings_invoke_arn
+  source                = "./api_gw"
+  get_plants            = module.lambda.plants.get
+  create_plant          = module.lambda.plants.create
+  get_plant_by_id       = module.lambda.plantsById.get
+  delete_plant_by_id    = module.lambda.plantsById.delete
+  get_plant_waterings   = module.lambda.plantsByIdWaterings.get
+  create_plant_watering = module.lambda.plantsByIdWaterings.create
 }
 
 module "lambda_sql" {
