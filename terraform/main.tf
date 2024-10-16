@@ -1,9 +1,3 @@
-provider "aws" {
-  region                   = var.region
-  profile                  = "default"
-  shared_credentials_files = ["${path.root}/aws_credentials"]
-}
-
 data "aws_iam_role" "labrole" {
   name = "LabRole"
 }
