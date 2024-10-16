@@ -78,6 +78,30 @@ module "lambda_sql" {
   lambda_security_group_id = module.security_groups.lambdas_sg_id
 }
 
-module "dynamo" {
-  source = "./dynamo"
+module "dynamodb_table" {
+  source   = "terraform-aws-modules/dynamodb-table/aws"
+  name     = "waterings"
+  hash_key = "plantId"
+  range_key = "timestamp"
+
+  billing_mode = "PROVISIONED"
+  read_capacity = 3
+  write_capacity = 3
+
+  attributes = [
+    {
+      name = "plantId"
+      type = "N"
+    },
+    {
+      name = "timestamp"
+      type = "S"
+    }
+  ]
+
+  tags = {
+    Name = "waterings-table"
+    Terraform   = "true"
+    Environment = "testing"
+  }
 }
