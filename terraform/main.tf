@@ -59,12 +59,12 @@ module "lambda" {
 
 module "api_gw" {
   source                = "./api_gw"
-  get_plants            = module.lambda.plants.get
-  create_plant          = module.lambda.plants.create
-  get_plant_by_id       = module.lambda.plantsById.get
-  delete_plant_by_id    = module.lambda.plantsById.delete
-  get_plant_waterings   = module.lambda.plantsByIdWaterings.get
-  create_plant_watering = module.lambda.plantsByIdWaterings.create
+  get_plants            = module.lambda.plants["get"]
+  create_plant          = module.lambda.plants["create"]
+  get_plant_by_id       = module.lambda.plantsById["get"]
+  delete_plant_by_id    = module.lambda.plantsById["delete"]
+  get_plant_waterings   = module.lambda.plantsByIdWaterings["get"]
+  create_plant_watering = module.lambda.plantsByIdWaterings["create"]
 }
 
 module "lambda_sql" {
