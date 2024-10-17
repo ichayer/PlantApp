@@ -79,13 +79,13 @@ module "lambda_sql" {
 }
 
 module "dynamodb_table" {
-  source   = "terraform-aws-modules/dynamodb-table/aws"
-  name     = "waterings"
-  hash_key = "plantId"
+  source    = "terraform-aws-modules/dynamodb-table/aws"
+  name      = "waterings"
+  hash_key  = "plantId"
   range_key = "timestamp"
 
-  billing_mode = "PROVISIONED"
-  read_capacity = 3
+  billing_mode   = "PROVISIONED"
+  read_capacity  = 3
   write_capacity = 3
 
   attributes = [
@@ -100,7 +100,7 @@ module "dynamodb_table" {
   ]
 
   tags = {
-    Name = "waterings-table"
+    Name        = "waterings-table"
     Terraform   = "true"
     Environment = "testing"
   }

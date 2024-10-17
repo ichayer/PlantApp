@@ -11,6 +11,10 @@ resource "aws_security_group" "lambdas_sg" {
   tags = {
     Name = "lambdas-sg"
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_security_group" "planty_db_proxy_sg" {
@@ -33,6 +37,10 @@ resource "aws_security_group" "planty_db_proxy_sg" {
   tags = {
     Name = "planty-db-proxy-sg"
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_security_group" "planty_db_sg" {
@@ -54,5 +62,9 @@ resource "aws_security_group" "planty_db_sg" {
 
   tags = {
     Name = "planty-db-sg"
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
