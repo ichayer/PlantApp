@@ -1,4 +1,4 @@
-CREATE TABLE plants (
+CREATE TABLE IF NOT EXISTS plants (
     id SERIAL PRIMARY KEY,
     name VARCHAR(200) NOT NULL,
     description VARCHAR(500),

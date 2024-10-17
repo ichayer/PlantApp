@@ -17,12 +17,15 @@ module "security_groups" {
 }
 
 module "rds" {
-  source            = "./rds"
-  subnet_group_name = module.vpc.rds_subnet_group_name
-  security_group_id = module.security_groups.rds_sg_id
-  db_name           = var.rds_db_name
-  db_username       = var.rds_db_username
-  db_password       = var.rds_db_password
+  source                   = "./rds"
+  subnet_group_name        = module.vpc.rds_subnet_group_name
+  security_group_id        = module.security_groups.rds_sg_id
+  db_name                  = var.rds_db_name
+  db_username              = var.rds_db_username
+  db_password              = var.rds_db_password
+  labrole_arn              = data.aws_iam_role.labrole.arn
+  lambda_subnet_ids        = module.vpc.lambda_subnet_ids
+  lambda_security_group_id = module.security_groups.lambdas_sg_id
 }
 
 module "s3" {
@@ -65,17 +68,6 @@ module "api_gw" {
   delete_plant_by_id    = module.lambda.plantsById["delete"]
   get_plant_waterings   = module.lambda.plantsByIdWaterings["get"]
   create_plant_watering = module.lambda.plantsByIdWaterings["create"]
-}
-
-module "lambda_sql" {
-  source                   = "./lambda_sql"
-  proxy_host               = module.rds_proxy.address
-  db_username              = var.rds_db_username
-  db_password              = var.rds_db_password
-  db_port                  = module.rds.port
-  labrole_arn              = data.aws_iam_role.labrole.arn
-  subnet_ids               = module.vpc.lambda_subnet_ids
-  lambda_security_group_id = module.security_groups.lambdas_sg_id
 }
 
 module "dynamodb_table" {

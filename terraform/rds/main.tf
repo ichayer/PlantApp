@@ -31,3 +31,37 @@ resource "aws_db_instance" "rds_db" {
         Environment = "dev/test"
     }
 }
+
+resource "aws_lambda_function" "table_creator" {
+    function_name = "rds_table_creator"
+    runtime       = "nodejs18.x"
+    handler       = "lambda_sql.handler"
+    role          = var.labrole_arn
+
+    environment {
+        variables = {
+            DB_NAME     = "postgres"
+            DB_USER     = var.db_username
+            DB_PASSWORD = var.db_password
+            DB_HOST     = aws_db_instance.rds_db.address
+            DB_PORT     = aws_db_instance.rds_db.port
+        }
+    }
+
+    filename = "${path.root}/../backend/lambda_sql/lambda_sql.zip"
+
+    vpc_config {
+        subnet_ids         = var.lambda_subnet_ids
+        security_group_ids = [var.lambda_security_group_id]
+    }
+}
+
+resource "null_resource" "db_setup" {
+  depends_on = [ aws_lambda_function.table_creator, aws_db_instance.rds_db ]
+  provisioner "local-exec" {
+    command = <<-EOF
+			aws lambda invoke --function-name rds_table_creator /dev/null
+			EOF
+    interpreter = ["bash", "-c"]
+  }
+}
