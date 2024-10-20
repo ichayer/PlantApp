@@ -1,28 +1,34 @@
 locals {
   lambda_functions = {
     "getPlants" = {
-      handler   = "plants.getPlants"
-      role      = var.labrole_arn
+      file    = "getPlants.js"
+      handler = "getPlants.getPlants"
+      role    = var.labrole_arn
     }
     "createPlant" = {
-      handler   = "plants.createPlant"
-      role      = var.labrole_arn
+      file    = "createPlant.js"
+      handler = "createPlant.createPlant"
+      role    = var.labrole_arn
     }
     "getPlantById" = {
-      handler   = "plantsById.getPlantById"
-      role      = var.labrole_arn
+      file    = "getPlantById.js"
+      handler = "getPlantById.getPlantById"
+      role    = var.labrole_arn
     }
     "deletePlantById" = {
-      handler   = "plantsById.deletePlantById"
-      role      = var.labrole_arn
+      file    = "deletePlantById.js"
+      handler = "deletePlantById.deletePlantById"
+      role    = var.labrole_arn
     }
     "getPlantsByIdWaterings" = {
-      handler   = "plantsByIdWaterings.getPlantWaterings"
-      role      = var.labrole_arn
+      file    = "getPlantsByIdWaterings.js"
+      handler = "getPlantsByIdWaterings.getPlantWaterings"
+      role    = var.labrole_arn
     }
     "createPlantsByIdWaterings" = {
-      handler   = "plantsByIdWaterings.createPlantWatering"
-      role      = var.labrole_arn
+      file    = "createPlantsByIdWaterings.js"
+      handler = "createPlantsByIdWaterings.createPlantWatering"
+      role    = var.labrole_arn
     }
   }
 }

@@ -14,18 +14,8 @@ const pg = new PgConnection({
 const dynamoClient = new DynamoDBClient({});
 const dynamo = DynamoDBDocumentClient.from(dynamoClient);
 
-async function getPlantById(event) {
+async function getPlantWaterings(event) {
     let plantId = Number(event.pathParameters.plantId);
-    let row = await pg.query("SELECT * FROM plants WHERE id = $1", plantId);
-    if (row.length == 0) {
-        return { statusCode: 404, body: "Not Found" };
-    }
-
-    row = row[0];
-    let name = row["name"];
-    let description = row["description"];
-    let waterFrequencyDays = row["water_frequency_days"];
-    let image = row["image"];
 
     const command = new QueryCommand({
         TableName: "waterings",
@@ -38,33 +28,12 @@ async function getPlantById(event) {
     const dynamoResponse = await dynamo.send(command);
     dynamoResponse.Items.forEach(ele => waterings.push(ele.timestamp));
 
-    let plant = {
-        plantId: plantId,
-        name: name,
-        description: description,
-        waterFrequencyDays: waterFrequencyDays,
-        image: image,
-        waterings: waterings,
-    };
-
     return {
         statusCode: 200,
-        body: JSON.stringify(plant),
-    };
-}
-
-async function deletePlantById(event) {
-    let plantId = Number(event.pathParameters.plantId);
-    let result = pg.deleteById("plants", plantId);
-    // TODO: Delete waterings from DynamoDB
-
-    return {
-        statusCode: 200,
-        body: JSON.stringify(result)
+        body: JSON.stringify(waterings),
     };
 }
 
 module.exports = {
-    getPlantById: getPlantById,
-    deletePlantById: deletePlantById,
+    getPlantWaterings: getPlantWaterings,
 }

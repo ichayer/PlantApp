@@ -25,7 +25,7 @@ exports.handler = async (event) => {
         console.error('Error creating tables:', err);
         return {
             statusCode: 500,
-            body: JSON.stringify('Error creating tables'),
+            body: JSON.stringify('Error creating tables' + err),
         };
     } finally {
         await client.disconnect();

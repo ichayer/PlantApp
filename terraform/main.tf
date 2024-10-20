@@ -1,3 +1,11 @@
+resource "null_resource" "npm_install_backend" {
+  provisioner "local-exec" {
+    working_dir = "${path.root}/../backend"
+    command     = "npm ci"
+    interpreter = ["bash", "-c"]
+  }
+}
+
 data "aws_iam_role" "labrole" {
   name = "LabRole"
 }
@@ -17,15 +25,15 @@ module "security_groups" {
 }
 
 module "rds" {
-  source                   = "./rds"
-  subnet_group_name        = module.vpc.rds_subnet_group_name
-  security_group_id        = module.security_groups.rds_sg_id
-  db_name                  = var.rds_db_name
-  db_username              = var.rds_db_username
-  db_password              = var.rds_db_password
-  labrole_arn              = data.aws_iam_role.labrole.arn
-  lambda_subnet_ids        = module.vpc.lambda_subnet_ids
-  lambda_security_group_id = module.security_groups.lambdas_sg_id
+  source            = "./rds"
+  depends_on        = [null_resource.npm_install_backend]
+  subnet_group_name = module.vpc.rds_subnet_group_name
+  security_group_id = module.security_groups.rds_sg_id
+  db_name           = var.rds_db_name
+  db_username       = var.rds_db_username
+  db_password       = var.rds_db_password
+  labrole_arn       = data.aws_iam_role.labrole.arn
+  lambda_subnet_ids = module.vpc.lambda_subnet_ids
 }
 
 module "s3" {
@@ -51,6 +59,7 @@ module "secrets" {
 
 module "lambda" {
   source            = "./lambda"
+  depends_on        = [null_resource.npm_install_backend]
   proxy_host        = module.rds_proxy.address
   db_username       = var.rds_db_username
   db_password       = var.rds_db_password

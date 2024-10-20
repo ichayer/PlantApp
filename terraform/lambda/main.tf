@@ -1,10 +1,24 @@
+resource "null_resource" "build_backend" {
+  for_each = local.lambda_functions
+  provisioner "local-exec" {
+    working_dir = "${path.root}/../backend"
+    command     = "zip -r $OUT_FILE $IN_FILES"
+    environment = {
+      "OUT_FILE" = "${each.value.file}.zip"
+      "IN_FILES" = "node_modules ${each.value.file}"
+    }
+    interpreter = ["bash", "-c"]
+  }
+}
+
 resource "aws_lambda_function" "plant_functions" {
-  for_each       = local.lambda_functions
-  function_name  = each.key
-  role           = each.value.role
-  handler        = each.value.handler
-  runtime        = "nodejs18.x"
-  filename       = "${path.root}/../backend/lambdas.zip"
+  depends_on    = [null_resource.build_backend]
+  for_each      = local.lambda_functions
+  function_name = each.key
+  role          = each.value.role
+  handler       = each.value.handler
+  runtime       = "nodejs18.x"
+  filename      = "${path.root}/../backend/${each.value.file}.zip"
 
   environment {
     variables = {
