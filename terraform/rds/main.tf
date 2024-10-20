@@ -72,9 +72,11 @@ resource "aws_lambda_function" "table_creator" {
 resource "null_resource" "db_setup" {
   depends_on = [aws_lambda_function.table_creator, aws_db_instance.rds_db]
   provisioner "local-exec" {
-    command     = <<-EOF
-			aws lambda invoke --function-name rds_table_creator /dev/null
-			EOF
+    command = "aws lambda invoke --region $REGION --function-name $LAMBDA_NAME /dev/null"
+    environment = {
+      "LAMBDA_NAME" = aws_lambda_function.table_creator.function_name
+      "REGION" = var.region
+    }
     interpreter = ["bash", "-c"]
   }
 }

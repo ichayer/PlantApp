@@ -34,11 +34,7 @@ module "rds" {
   db_password       = var.rds_db_password
   labrole_arn       = data.aws_iam_role.labrole.arn
   lambda_subnet_ids = module.vpc.lambda_subnet_ids
-}
-
-module "s3" {
-  source      = "./s3"
-  bucket_name = var.s3_bucket_name
+  region            = var.region
 }
 
 module "rds_proxy" {
@@ -55,28 +51,6 @@ module "secrets" {
   secret_name = var.rds_secret_name
   db_username = var.rds_db_username
   db_password = var.rds_db_password
-}
-
-module "lambda" {
-  source            = "./lambda"
-  depends_on        = [null_resource.npm_install_backend]
-  proxy_host        = module.rds_proxy.address
-  db_username       = var.rds_db_username
-  db_password       = var.rds_db_password
-  db_port           = module.rds.port
-  labrole_arn       = data.aws_iam_role.labrole.arn
-  lambda_subnet_ids = module.vpc.lambda_subnet_ids
-  security_group_id = module.security_groups.lambdas_sg_id
-}
-
-module "api_gw" {
-  source                = "./api_gw"
-  get_plants            = module.lambda.plants["get"]
-  create_plant          = module.lambda.plants["create"]
-  get_plant_by_id       = module.lambda.plantsById["get"]
-  delete_plant_by_id    = module.lambda.plantsById["delete"]
-  get_plant_waterings   = module.lambda.plantsByIdWaterings["get"]
-  create_plant_watering = module.lambda.plantsByIdWaterings["create"]
 }
 
 module "dynamodb_table" {
@@ -105,4 +79,33 @@ module "dynamodb_table" {
     Terraform   = "true"
     Environment = "testing"
   }
+}
+
+
+module "lambda" {
+  source            = "./lambda"
+  depends_on        = [null_resource.npm_install_backend]
+  proxy_host        = module.rds_proxy.address
+  db_username       = var.rds_db_username
+  db_password       = var.rds_db_password
+  db_port           = module.rds.port
+  labrole_arn       = data.aws_iam_role.labrole.arn
+  lambda_subnet_ids = module.vpc.lambda_subnet_ids
+  security_group_id = module.security_groups.lambdas_sg_id
+}
+
+module "api_gw" {
+  source                = "./api_gw"
+  get_plants            = module.lambda.plants["get"]
+  create_plant          = module.lambda.plants["create"]
+  get_plant_by_id       = module.lambda.plantsById["get"]
+  delete_plant_by_id    = module.lambda.plantsById["delete"]
+  get_plant_waterings   = module.lambda.plantsByIdWaterings["get"]
+  create_plant_watering = module.lambda.plantsByIdWaterings["create"]
+}
+
+module "s3" {
+  source       = "./s3"
+  bucket_name  = var.s3_bucket_name
+  api_endpoint = module.api_gw.api_endpoint
 }

@@ -35,3 +35,8 @@ variable "lambda_subnet_ids" {
   description = "The list of subnet IDs where the Lambda function will be deployed"
   type        = list(string)
 }
+
+variable "region" {
+  description = "The AWS region we're deploying to"
+  type        = string
+}
