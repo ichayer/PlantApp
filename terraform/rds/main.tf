@@ -65,7 +65,7 @@ resource "aws_lambda_function" "table_creator" {
 
   vpc_config {
     subnet_ids         = var.lambda_subnet_ids
-    security_group_ids = [var.security_group_id]
+    security_group_ids = [var.tablecreator_security_group_id]
   }
 }
 
@@ -75,7 +75,7 @@ resource "null_resource" "db_setup" {
     command = "aws lambda invoke --region $REGION --function-name $LAMBDA_NAME /dev/null"
     environment = {
       "LAMBDA_NAME" = aws_lambda_function.table_creator.function_name
-      "REGION" = var.region
+      "REGION"      = var.region
     }
     interpreter = ["bash", "-c"]
   }

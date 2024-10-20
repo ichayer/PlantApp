@@ -8,6 +8,11 @@ variable "security_group_id" {
   type        = string
 }
 
+variable "tablecreator_security_group_id" {
+  description = "The id of the security group for the lambda that creates the DB tables"
+  type        = string
+}
+
 variable "db_name" {
   description = "The RDS database name"
   type        = string
