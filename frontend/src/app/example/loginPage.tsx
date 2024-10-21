@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { signIn, signUp } from "./authService";
+import { signIn, signUp } from "../../lib/authService";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
