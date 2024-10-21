@@ -2,16 +2,29 @@ import { Button } from "src/components/ui/button"
 import { Input } from "src/components/ui/input"
 import { Label } from "src/components/ui/label"
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import {signUp} from "../lib/authContext";
 
 export default function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleSignUp = () => {
-    signUp(email, password);
-  }
+  const handleSignUp = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+    try {
+      await signUp(email, password);
+      navigate("/confirm", { state: { email } });
+    } catch (error) {
+      alert(`Sign up failed: ${error}`);
+    }
+  };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-green-50">

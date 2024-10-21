@@ -1,10 +1,10 @@
 import React from 'react';
 import './App.css';
 import Signup from "./app/sign-up";
-import ConfirmUserPage from "./app/example/confirmUserPage";
-import HomePage from "./app/example/homePage";
-import LoginPage from "./app/example/loginPage";
+import Login from "./app/login";
+import ConfirmUserPage from "./app/confirmation-code";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import MyPlants from "./app/plant-app";
 
 
 const App = () => {
@@ -27,29 +27,20 @@ const App = () => {
                             )
                         }
                     />
-                    <Route path="/login" element={<LoginPage/>}/>
+                    <Route path="/login" element={<Login/>}/>
+                    <Route path="/signup" element={<Signup/>}/>
                     <Route path="/confirm" element={<ConfirmUserPage/>}/>
                     <Route
                         path="/home"
                         element={
-                            isAuthenticated() ? <HomePage/> : <Navigate replace to="/login"/>
+                            isAuthenticated() ? <MyPlants/> : <Navigate replace to="/login"/>
                         }
                     />
                 </Routes>
             </BrowserRouter>
     </div>
-        );
-        };
-
-
-            function App2() {
-            return (
-            <div className="App">
-
-            <Signup></Signup>
-        {/*<MyPlants></MyPlants>*/}
-        </div>
     );
-}
+};
+
 
 export default App;
