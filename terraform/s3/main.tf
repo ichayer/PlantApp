@@ -42,11 +42,17 @@ resource "null_resource" "build_frontend" {
     working_dir = "${path.root}/../frontend"
     command     = <<-EOF
       echo "export const url = '$API_ENDPOINT'" > ./src/lib/api.ts
+      echo "export const userPoolId = '$USER_POOL_ID'" > ./cognito.ts
+      echo "export const clientId = '$CLIENT_ID'" >> ./cognito.ts
+      echo "export const region = '$REGION'" >> ./cognito.ts
 			npm ci
       npm run build
 			EOF
     environment = {
       "API_ENDPOINT" = var.api_endpoint
+      "USER_POOL_ID" = var.cognito_user_pool_id
+      "CLIENT_ID"    = var.cognito_client_id
+      "REGION"       = var.region
     }
     interpreter = ["bash", "-c"]
   }

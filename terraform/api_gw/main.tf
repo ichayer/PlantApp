@@ -17,40 +17,64 @@ resource "aws_apigatewayv2_stage" "default" {
   auto_deploy = true
 }
 
+resource "aws_apigatewayv2_authorizer" "auth" {
+  api_id           = aws_apigatewayv2_api.planty_http_api.id
+  authorizer_type  = "JWT"
+  identity_sources = ["$request.header.Authorization"]
+  name             = "cognito-authorizer"
+
+  jwt_configuration {
+    audience = [var.cognito_client_id]
+    issuer   = "https://${var.cognito_auth_endpoint}"
+  }
+}
+
 resource "aws_apigatewayv2_route" "get_plants_route" {
   api_id    = aws_apigatewayv2_api.planty_http_api.id
   route_key = "GET /plants"
   target    = "integrations/${aws_apigatewayv2_integration.get_plants_integration.id}"
+  authorization_type = "JWT"
+  authorizer_id = aws_apigatewayv2_authorizer.auth.id
 }
 
 resource "aws_apigatewayv2_route" "post_plants_route" {
   api_id    = aws_apigatewayv2_api.planty_http_api.id
   route_key = "POST /plants"
   target    = "integrations/${aws_apigatewayv2_integration.create_plant_integration.id}"
+  authorization_type = "JWT"
+  authorizer_id = aws_apigatewayv2_authorizer.auth.id
 }
 
 resource "aws_apigatewayv2_route" "get_plant_by_id_route" {
   api_id    = aws_apigatewayv2_api.planty_http_api.id
   route_key = "GET /plants/{plantId}"
   target    = "integrations/${aws_apigatewayv2_integration.get_plant_by_id_integration.id}"
+  authorization_type = "JWT"
+  authorizer_id = aws_apigatewayv2_authorizer.auth.id
 }
 
 resource "aws_apigatewayv2_route" "delete_plant_by_id_route" {
   api_id    = aws_apigatewayv2_api.planty_http_api.id
   route_key = "DELETE /plants/{plantId}"
   target    = "integrations/${aws_apigatewayv2_integration.delete_plant_by_id_integration.id}"
+  authorization_type = "JWT"
+  authorizer_id = aws_apigatewayv2_authorizer.auth.id
 }
 
 resource "aws_apigatewayv2_route" "get_plant_waterings_route" {
   api_id    = aws_apigatewayv2_api.planty_http_api.id
   route_key = "GET /plants/{plantId}/waterings"
   target    = "integrations/${aws_apigatewayv2_integration.get_plant_waterings_integration.id}"
+  authorization_type = "JWT"
+  authorizer_id = aws_apigatewayv2_authorizer.auth.id
 }
 
 resource "aws_apigatewayv2_route" "create_plant_waterings_route" {
   api_id    = aws_apigatewayv2_api.planty_http_api.id
   route_key = "POST /plants/{plantId}/waterings"
   target    = "integrations/${aws_apigatewayv2_integration.create_plant_watering_integration.id}"
+  authorization_type = "JWT"
+  authorizer_id = aws_apigatewayv2_authorizer.auth.id
 }
 
 resource "aws_apigatewayv2_integration" "get_plants_integration" {

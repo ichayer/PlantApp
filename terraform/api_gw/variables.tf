@@ -45,3 +45,14 @@ variable "create_plant_watering" {
   })
   description = "The function name and invocation ARN of the POST /plants/{id}/waterings lambda"
 }
+
+
+variable "cognito_client_id" {
+  type = string
+  description = "The ID of the app integration in cognito"
+}
+
+variable "cognito_auth_endpoint" {
+  type = string
+  description = "Endpoint for authentication"
+}
