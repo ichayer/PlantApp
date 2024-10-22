@@ -21,12 +21,12 @@ locals {
       role    = var.labrole_arn
     }
     "getPlantsByIdWaterings" = {
-      file    = "getPlantsByIdWaterings.js"
+      file    = "getPlantWaterings.js"
       handler = "getPlantsByIdWaterings.getPlantWaterings"
       role    = var.labrole_arn
     }
     "createPlantsByIdWaterings" = {
-      file    = "createPlantsByIdWaterings.js"
+      file    = "createPlantWatering.js"
       handler = "createPlantsByIdWaterings.createPlantWatering"
       role    = var.labrole_arn
     }

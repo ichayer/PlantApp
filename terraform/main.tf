@@ -95,6 +95,10 @@ module "lambda" {
   security_group_id = module.security_groups.lambdas_sg_id
 }
 
+module "cognito" {
+  source      = "./cognito"
+}
+
 module "api_gw" {
   source                = "./api_gw"
   get_plants            = module.lambda.plants["get"]
@@ -103,10 +107,15 @@ module "api_gw" {
   delete_plant_by_id    = module.lambda.plantsById["delete"]
   get_plant_waterings   = module.lambda.plantsByIdWaterings["get"]
   create_plant_watering = module.lambda.plantsByIdWaterings["create"]
+  cognito_auth_endpoint = module.cognito.auth_endpoint
+  cognito_client_id     = module.cognito.client_id
 }
 
 module "s3" {
-  source       = "./s3"
-  bucket_name  = var.s3_bucket_name
-  api_endpoint = module.api_gw.api_endpoint
+  source                  = "./s3"
+  bucket_name             = var.s3_bucket_name
+  api_endpoint            = module.api_gw.api_endpoint
+  cognito_user_pool_id    = module.cognito.user_pool_id
+  cognito_client_id       = module.cognito.client_id
+  region                  = var.region
 }
