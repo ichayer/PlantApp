@@ -25,16 +25,17 @@ module "security_groups" {
 }
 
 module "rds" {
-  source            = "./rds"
-  depends_on        = [null_resource.npm_install_backend]
-  subnet_group_name = module.vpc.rds_subnet_group_name
-  security_group_id = module.security_groups.rds_sg_id
-  db_name           = var.rds_db_name
-  db_username       = var.rds_db_username
-  db_password       = var.rds_db_password
-  labrole_arn       = data.aws_iam_role.labrole.arn
-  lambda_subnet_ids = module.vpc.lambda_subnet_ids
-  region            = var.region
+  source                         = "./rds"
+  depends_on                     = [null_resource.npm_install_backend]
+  subnet_group_name              = module.vpc.rds_subnet_group_name
+  security_group_id              = module.security_groups.rds_sg_id
+  tablecreator_security_group_id = module.security_groups.lambda_table_creator_sg_id
+  db_name                        = var.rds_db_name
+  db_username                    = var.rds_db_username
+  db_password                    = var.rds_db_password
+  labrole_arn                    = data.aws_iam_role.labrole.arn
+  lambda_subnet_ids              = module.vpc.lambda_subnet_ids
+  region                         = var.region
 }
 
 module "rds_proxy" {
