@@ -1,6 +1,7 @@
 const PgConnection = require("postgresql-easy");
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const { QueryCommand, DynamoDBDocumentClient } = require("@aws-sdk/lib-dynamodb");
+const jwt = require('jwt-decode');
 
 const pg = new PgConnection({
     host: process.env.DB_HOST,
@@ -19,7 +20,10 @@ async function getPlants(event) {
     let page = Math.max(0, event?.queryStringParameters?.page ?? 0);
     let pageSize = Math.min(Math.max(0, event?.queryStringParameters?.pageSize ?? 10), 100);
 
-    let plantRows = await pg.query("SELECT * FROM plants ORDER BY id DESC LIMIT $1 OFFSET $2", pageSize, page * pageSize);
+    const token = event.headers.authorization;
+    const decoded = jwt.jwtDecode(token);
+
+    let plantRows = await pg.query("SELECT * FROM plants where uuid = $1 ORDER BY id DESC LIMIT $2 OFFSET $3", decoded.username, pageSize, page * pageSize);
 
     let plants = [];
     for (let i = 0; i < plantRows.length; i++) {

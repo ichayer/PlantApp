@@ -42,15 +42,16 @@ export default function MyPlants() {
     image: placeHolderImagePath
   })
 
-  const accessToken = sessionStorage.getItem("accessToken");
-  const headers = {
-    "Content-Type": "application/json",
-    "Authorization": `Bearer ${accessToken}`
-  }
+
 
   useEffect(() => {
     const fetchPlants = async () => {
       try {
+        const accessToken = sessionStorage.getItem("accessToken");
+        const headers = {
+          "Content-Type": "application/json",
+          "authorization": `Bearer ${accessToken}`
+        }
         const response = await fetch(plantsPath, { headers: headers });
 
         const data = await response.json()
@@ -93,8 +94,14 @@ export default function MyPlants() {
 
   const handleWaterPlant = async (plantId: number) => {
     try {
+
+      const accessToken = sessionStorage.getItem("accessToken");
+      const headers = {
+        "Content-Type": "application/json",
+        "authorization": `Bearer ${accessToken}`
+      }
+
       const response = await fetch(`${plantsPath}/${plantId}/waterings`, {
-        mode: 'no-cors',
         method: 'POST',
         headers: headers,
         body: JSON.stringify({ description: "Hola" }), // Otras propiedades si son necesarias
@@ -127,6 +134,12 @@ export default function MyPlants() {
     }
 
     try {
+
+      const accessToken = sessionStorage.getItem("accessToken");
+      const headers = {
+        "Content-Type": "application/json",
+        "authorization": `Bearer ${accessToken}`
+      }
       const response = await fetch(plantsPath, {
         method: 'POST',
         body: JSON.stringify(plantToAdd),
