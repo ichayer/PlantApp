@@ -2,7 +2,7 @@ import { Button } from "src/components/ui/button"
 import { Input } from "src/components/ui/input"
 import { Label } from "src/components/ui/label"
 import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {signUp} from "../lib/authContext";
 
 export default function Signup() {
@@ -71,9 +71,9 @@ export default function Signup() {
         </form>
         <div className="mt-4 text-center text-sm text-green-600">
           ¿Ya tienes una cuenta?{" "}
-          <a href="/login" className="underline hover:text-green-800">
+          <Link to="/login" className="underline hover:text-green-800">
             Inicia sesión
-          </a>
+          </Link>
         </div>
       </div>
     </div>
