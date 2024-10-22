@@ -10,9 +10,9 @@ resource "aws_s3_bucket_website_configuration" "frontend_website" {
     suffix = "index.html"
   }
 
-  #   error_document {
-  #     key = "error.html"
-  #   }
+  error_document {
+    key = "index.html"
+  }
 }
 
 resource "aws_s3_bucket_public_access_block" "public_access_block" {

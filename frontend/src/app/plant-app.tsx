@@ -42,10 +42,17 @@ export default function MyPlants() {
     image: placeHolderImagePath
   })
 
+  const accessToken = sessionStorage.getItem("accessToken");
+  const headers = {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${accessToken}`
+  }
+
   useEffect(() => {
     const fetchPlants = async () => {
       try {
-        const response = await fetch(plantsPath)
+        const response = await fetch(plantsPath, { headers: headers });
+
         const data = await response.json()
         const transformedData: Plant[] = data.map((item: any) => ({
           id: item.plantId,
@@ -89,9 +96,7 @@ export default function MyPlants() {
       const response = await fetch(`${plantsPath}/${plantId}/waterings`, {
         mode: 'no-cors',
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: headers,
         body: JSON.stringify({ description: "Hola" }), // Otras propiedades si son necesarias
       });
   
@@ -123,12 +128,9 @@ export default function MyPlants() {
 
     try {
       const response = await fetch(plantsPath, {
-        mode: 'no-cors',
         method: 'POST',
         body: JSON.stringify(plantToAdd),
-        headers: {
-          'Content-Type': 'application/json',
-        }
+        headers: headers
       });
 
       if (response.ok) {
