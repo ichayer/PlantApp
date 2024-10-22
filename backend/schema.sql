@@ -4,5 +4,5 @@ CREATE TABLE IF NOT EXISTS plants (
     description VARCHAR(500),
     water_frequency_days SMALLINT NOT NULL,
     image TEXT,
-    uuid VARCHAR(36) UNIQUE
+    uuid VARCHAR(36)
 );
