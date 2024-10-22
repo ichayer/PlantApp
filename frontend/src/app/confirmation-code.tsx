@@ -44,7 +44,7 @@ export default function ConfirmUserPage() {
             <Label htmlFor="password" className="text-green-700">Codigo de confirmacion</Label>
             <Input
                 id="password"
-                type="password"
+                type="text"
                 required
                 className="border-green-300 focus:border-green-500 focus:ring-green-500 text-center"
                 value={confirmationCode}
