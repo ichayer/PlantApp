@@ -1,4 +1,5 @@
 const PgConnection = require("postgresql-easy");
+const jwt = require('jwt-decode');
 
 const pg = new PgConnection({
     host: process.env.DB_HOST,
@@ -10,7 +11,24 @@ const pg = new PgConnection({
 });
 
 async function deletePlantById(event) {
+    console.log(event.headers?.authorization);
+    const token = event.headers?.authorization;
+    const decoded = jwt.jwtDecode(token);
+
     let plantId = Number(event.pathParameters.plantId);
+
+    let row = await pg.query("SELECT * FROM plants WHERE id = $1", plantId);
+    if (row.length == 0) {
+        return { statusCode: 404, body: "Not Found" };
+    }
+
+    row = row[0];
+    let uuid = row["uuid"]
+
+    if (uuid !== decoded.username) {
+        return { statusCode: 401, body: "Unauthorized" };
+    }
+
     let result = pg.deleteById("plants", plantId);
 
     return {
