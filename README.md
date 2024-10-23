@@ -1,19 +1,40 @@
-# PlantApp
-A cloud solution for taking care of your plants.
+<h1 align="center" style="display: block; font-size: 2.5em; font-weight: bold; margin-block-start: 1em; margin-block-end: 1em;">
+<a name="logo"><img align="center" src="https://images.vexels.com/media/users/3/249626/isolated/preview/db675fc115a395f63b3c25997481b224-cute-happy-plant-in-a-pot.png" style="width:50%;height:100%"/></a>
+  <br /><br /><strong>PlantApp</strong>
+</h1>
 
-## FrontEnd
-The front-end consists of a React app deployed in an S3 bucket.
+<div align="center">
+  <img src="https://img.shields.io/badge/Terraform-7B42BC?style=for-the-badge&logo=terraform&logoColor=white" alt="terraform">
+  <img src="https://img.shields.io/badge/Amazon_AWS-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white" alt="aws">
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="react">
+  <img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" alt="js">
+  <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" alt="linux">
+</div>
 
-## Backend
-The back-end consists of lambda functions written in JavaScript, accessible via an API Gateway.
+---
 
-## Terraform deployment
+# Table of contents
+- [Table of contents](#table-of-contents)
+  - [About this repository](#about-this-repository)
+  - [Terraform deployment](#terraform-deployment)
+    - [Requirements](#requirements)
+    - [Getting started](#getting-started)
+    - [Meta-arguments and functions used](#meta-arguments-and-functions-used)
+    - [Modules](#modules)
+  - [Architecture components](#architecture-components)
 
+## [About this repository](#about-this-repository)
+- The readme_utils folder includes resources (e.g., images) used in the README.md file.
+- The frontend folder contains a React app that will be deployed to an S3 bucket.
+- The backend folder contains JavaScript code for deployment in multiple Lambda functions, accessible through an API Gateway.
+- The terraform folder contains Terraform code to deploy the entire application and its [architecture](#architecture-components).
+
+## [Terraform deployment](#terraform-deployment)
 PlantApp can be fully deployed with Terraform. Terraform will create all the AWS resources necessary, and will also run scripts for building and packaging the required code before deploying it.
 
 Due to these scripts, **the terraform deployment must be run on Linux**. This is confirmed to work on Ubuntu 22.04 LTS.
 
-### Requirements
+### [Requirements](#requirements)
 
 - [Terraform](https://developer.hashicorp.com/terraform/install)
 
@@ -29,7 +50,7 @@ Due to these scripts, **the terraform deployment must be run on Linux**. This is
 
 - The `zip` apt package, installable with `sudo apt install zip`
 
-### Getting started
+### [Getting started](#getting-started)
 
 Once all the requirements have been installed, deploy the project by following these steps:
 
@@ -53,7 +74,7 @@ Once all the requirements have been installed, deploy the project by following t
 
     - Apply changes on the infrastructure: `terraform apply`
 
-### Meta-arguments and functions used
+### [Meta-arguments and functions used](#meta-arguments-and-functions-used)
 - [depends_on](https://developer.hashicorp.com/terraform/language/meta-arguments/depends_on)
 - [for_each](https://developer.hashicorp.com/terraform/language/meta-arguments/for_each)
 - [count](https://developer.hashicorp.com/terraform/language/meta-arguments/count)
@@ -63,7 +84,7 @@ Once all the requirements have been installed, deploy the project by following t
 - [jsonencode](https://developer.hashicorp.com/terraform/language/functions/jsondecode)
 - [plantimestamp](https://developer.hashicorp.com/terraform/language/functions/plantimestamp)
 
-## Modules
+### [Modules](#modules)
 The project consists of a [main.tf](terraform/main.tf) located at the root of the project, which calls several modules to deploy the infrastructure.
 
 Only one external module was used, the [dynamoDB Table](https://registry.terraform.io/modules/terraform-aws-modules/dynamodb-table/aws/latest). The rest of the modules were made by us. Each module consists of a `main.tf`, an `outputs.tf`, a `variables.tf`, and optionally a `locals.tf`.
@@ -79,7 +100,7 @@ A continuacion dejamos una breve descripcion de cada modulo:
 - `cognito`: provisions an AWS Cognito User Pool for the app enabling user authentication and management. The user pool is set up to allow both user and admin-initiated account creation, with email as the primary username attribute. It includes an email verification process, where users receive a confirmation code for account verification.
 - `api_gw`: provisions an HTTP API for the "Plant Tracker" application using AWS API Gateway. It establishes CORS settings, defines routes for plant management (GET, POST, DELETE), and secures them with a JWT authorizer integrated with AWS Cognito. The API connects to Lambda functions through proxy integrations, allowing functionalities like retrieving and creating plants, as well as managing watering records. Additionally, it grants permissions for API Gateway to invoke the respective Lambda functions.
 
-## Architecture
+## [Architecture components](#architecture-components)
 
 <p align="center">
   <img src="readme_utils/architecture.jpg" alt="AWS architecture">
