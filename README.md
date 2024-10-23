@@ -40,8 +40,6 @@ Once all the requirements have been installed, deploy the project by following t
 2. Fill in the terraform variables at `PlantApp/terraform/terraform.tfvars`
 
     - We have provided an example `terraform.tfvars-sample` file
-  
-3. Open a terminal in the root of the project and run `chmod u+x frontend/build_frontend.sh` (this is just in case)
 
 3. Initialize and run terraform in the `terraform` directory
 
