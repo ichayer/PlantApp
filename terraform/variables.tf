@@ -5,16 +5,6 @@ variable "region" {
 }
 
 # VPC Parameters
-variable "vpc_cidr" {
-  description = "The CIDR block for the VPC"
-  type        = string
-}
-
-variable "vpc_name" {
-  description = "The name of the VPC"
-  type        = string
-}
-
 variable "vpc_lambda_subnet_count" {
   description = "The number of subnets for Lambda functions"
   type        = number
@@ -26,11 +16,6 @@ variable "vpc_rds_subnet_count" {
 }
 
 # RDS Parameters
-variable "rds_db_name" {
-  description = "The RDS name"
-  type        = string
-}
-
 variable "rds_db_username" {
   description = "The username for the PostgreSQL database"
   type        = string
@@ -53,4 +38,10 @@ variable "rds_secret_name" {
 variable "s3_bucket_name" {
   description = "S3 bucket name"
   type        = string
+}
+
+# Cognito
+variable "cognito_user_pool_domain" {
+  description = "Cognito user pool domain"
+  type        =  string
 }

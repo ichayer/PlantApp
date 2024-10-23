@@ -13,8 +13,6 @@ data "aws_iam_role" "labrole" {
 module "vpc" {
   source              = "./vpc"
   vpc_region          = var.region
-  vpc_name            = var.vpc_name
-  vpc_cidr            = var.vpc_cidr
   lambda_subnet_count = var.vpc_lambda_subnet_count
   rds_subnet_count    = var.vpc_rds_subnet_count
 }
@@ -30,7 +28,6 @@ module "rds" {
   subnet_group_name              = module.vpc.rds_subnet_group_name
   security_group_id              = module.security_groups.rds_sg_id
   tablecreator_security_group_id = module.security_groups.lambda_table_creator_sg_id
-  db_name                        = var.rds_db_name
   db_username                    = var.rds_db_username
   db_password                    = var.rds_db_password
   labrole_arn                    = data.aws_iam_role.labrole.arn
@@ -97,6 +94,7 @@ module "lambda" {
 
 module "cognito" {
   source      = "./cognito"
+  user_pool_domain = var.cognito_user_pool_domain
 }
 
 module "api_gw" {

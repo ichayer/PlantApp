@@ -18,7 +18,7 @@ resource "aws_cognito_user_pool" "plant_app_pool" {
 
 
 resource "aws_cognito_user_pool_domain" "main" {
-  domain       = "main"
+  domain       = var.user_pool_domain
   user_pool_id = aws_cognito_user_pool.plant_app_pool.id
 }
 

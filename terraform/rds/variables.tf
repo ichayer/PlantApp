@@ -13,11 +13,6 @@ variable "tablecreator_security_group_id" {
   type        = string
 }
 
-variable "db_name" {
-  description = "The RDS database name"
-  type        = string
-}
-
 variable "db_username" {
   description = "The username for the RDS database"
   type        = string
