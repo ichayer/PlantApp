@@ -72,6 +72,9 @@ Once all the requirements have been installed, deploy the project by following t
 
     - Apply changes on the infrastructure: `terraform apply`
 
+> [!IMPORTANT]  
+> The deployment of the infrastructure will take approximately 20 to 25 minutes.
+
 ### [Meta-arguments and functions used](#meta-arguments-and-functions-used)
 - [depends_on](https://developer.hashicorp.com/terraform/language/meta-arguments/depends_on)
 - [for_each](https://developer.hashicorp.com/terraform/language/meta-arguments/for_each)
