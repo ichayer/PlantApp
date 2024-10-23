@@ -43,5 +43,5 @@ variable "s3_bucket_name" {
 # Cognito
 variable "cognito_user_pool_domain" {
   description = "Cognito user pool domain"
-  type        =  string
+  type        = string
 }

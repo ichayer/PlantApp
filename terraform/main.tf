@@ -93,7 +93,7 @@ module "lambda" {
 }
 
 module "cognito" {
-  source      = "./cognito"
+  source           = "./cognito"
   user_pool_domain = var.cognito_user_pool_domain
 }
 
@@ -110,10 +110,10 @@ module "api_gw" {
 }
 
 module "s3" {
-  source                  = "./s3"
-  bucket_name             = var.s3_bucket_name
-  api_endpoint            = module.api_gw.api_endpoint
-  cognito_user_pool_id    = module.cognito.user_pool_id
-  cognito_client_id       = module.cognito.client_id
-  region                  = var.region
+  source               = "./s3"
+  bucket_name          = var.s3_bucket_name
+  api_endpoint         = module.api_gw.api_endpoint
+  cognito_user_pool_id = module.cognito.user_pool_id
+  cognito_client_id    = module.cognito.client_id
+  region               = var.region
 }
