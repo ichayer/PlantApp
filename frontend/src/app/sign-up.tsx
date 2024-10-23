@@ -11,8 +11,44 @@ export default function Signup() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
 
+
+  const validatePassword = (password: string): string[] => {
+    const errors: string[] = [];
+
+    if (password.length < 8) {
+      errors.push("La contraseña debe tener al menos 8 caracteres.");
+    }
+
+    if (!/\d/.test(password)) {
+      errors.push("La contraseña debe contener al menos un número.");
+    }
+
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      errors.push("La contraseña debe contener al menos un carácter especial.");
+    }
+
+    if (!/[A-Z]/.test(password)) {
+      errors.push("La contraseña debe contener al menos una letra mayúscula.");
+    }
+
+    if (!/[a-z]/.test(password)) {
+      errors.push("La contraseña debe contener al menos una letra minúscula.");
+    }
+
+    return errors;
+  };
+
   const handleSignUp = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+
+    const errors = validatePassword(password);
+
+    if (errors.length > 0) {
+      const formattedErrors = errors.map(error => `- ${error}`).join('\n');
+      alert("Errores: \n" + formattedErrors)
+      return;
+    }
+
     if (password !== confirmPassword) {
       alert("Passwords do not match");
       return;
