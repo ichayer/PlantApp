@@ -73,7 +73,7 @@ Once all the requirements have been installed, deploy the project by following t
     - Apply changes on the infrastructure: `terraform apply`
 
 > [!IMPORTANT]  
-> The deployment of the infrastructure will take approximately 20 to 25 minutes. Once Terraform finishes deploying everything, go to the S3 service, and under the "Static website hosting" tab, click on the bucket website endpoint to access the application (e.g. `http://itba-cloudcomputing-2024q1-g10-t.s3-website-us-east-1.amazonaws.com`)
+> The deployment of the infrastructure will take approximately 20 to 25 minutes. Once Terraform finishes deploying everything, go to the S3 service, click on the 'Properties' tab, and under the 'Static website hosting' section, click on the bucket website endpoint to access the application (e.g. http://itba-cloudcomputing-2024q1-g10-t.s3-website-us-east-1.amazonaws.com).
 
 ### [Meta-arguments and functions used](#meta-arguments-and-functions-used)
 - [depends_on](https://developer.hashicorp.com/terraform/language/meta-arguments/depends_on)
