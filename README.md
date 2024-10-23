@@ -24,10 +24,10 @@
   - [Architecture components](#architecture-components)
 
 ## [About this repository](#about-this-repository)
-- The readme_utils folder includes resources (e.g., images) used in the README.md file.
-- The frontend folder contains a React app that will be deployed to an S3 bucket.
-- The backend folder contains JavaScript code for deployment in multiple Lambda functions, accessible through an API Gateway.
-- The terraform folder contains Terraform code to deploy the entire application and its [architecture](#architecture-components).
+- The `readme_utils` folder includes resources (e.g., images) used in the `README.md` file.
+- The `frontend folder` contains a React app that will be deployed to an S3 bucket.
+- The `backend` folder contains JavaScript code for deployment in multiple Lambda functions, accessible through an API Gateway.
+- The `terraform` folder contains Terraform code to deploy the entire application and its [architecture](#architecture-components).
 
 ## [Terraform deployment](#terraform-deployment)
 PlantApp can be fully deployed with Terraform. Terraform will create all the AWS resources necessary, and will also run scripts for building and packaging the required code before deploying it.
