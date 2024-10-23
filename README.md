@@ -66,7 +66,7 @@ The project consists of a [main.tf](terraform/main.tf) located at the root of th
 
 Only one external module was used, the [dynamoDB Table](https://registry.terraform.io/modules/terraform-aws-modules/dynamodb-table/aws/latest). The rest of the modules were made by us. Each module consists of a `main.tf`, an `outputs.tf`, a `variables.tf`, and optionally a `locals.tf`.
 
-A continuacion dejamos una breve descripcion de cada modulo:
+Brief description of each custom module:
 - `vpc`: provisions the core network infrastructure for the PlantApp, defining a VPC with private subnets for Lambda and RDS instances. It creates route tables for these subnets, associates them, and sets up subnet groups for RDS and Lambda. Additionally, it configures VPC endpoints for S3 and DynamoDB to enable private access to these services without needing internet access
 - `security_groups`: provisions multiple security groups within the VPC to control network traffic. It sets up egress rules for Lambda functions and a specific table creator Lambda, allowing outbound traffic. Two security groups for the database and its proxy are also defined, with ingress rules allowing secure communication over port 5432 (PostgreSQL) between the Lambdas and the database. All resources have a create_before_destroy lifecycle to ensure smooth updates during deployments.
 - `secrets`: creates a secret in AWS Secrets Manager for securely storing RDS credentials. 
