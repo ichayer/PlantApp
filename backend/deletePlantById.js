@@ -11,7 +11,6 @@ const pg = new PgConnection({
 });
 
 async function deletePlantById(event) {
-    console.log(event.headers?.authorization);
     const token = event.headers?.authorization;
     const decoded = jwt.jwtDecode(token);
 
