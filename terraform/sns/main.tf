@@ -30,5 +30,5 @@ resource "aws_sns_topic_subscription" "email" {
   topic_arn = aws_sns_topic.plant_notifications.arn
   protocol  = "email"
   endpoint  = var.notification_email
-  raw_message_delivery = false
+  endpoint_auto_confirms = true
 }

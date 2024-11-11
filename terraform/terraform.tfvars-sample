@@ -15,3 +15,5 @@ s3_bucket_name  = MUST BE UNIQUE FOR EVERYONE!!!! (e.g. "itba-cloudcomputing-202
 
 # Cognito
 cognito_user_pool_domain = MUST BE UNIQUE FOR EVERYONE!!!! (e.g. "planty-user-pool-domain-yourname")
+
+sns_subscription_email = YOUR_EMAIL (e.g "test@itba.edu.ar")

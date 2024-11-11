@@ -27,15 +27,9 @@ async function processWateringNotification(event) {
                             `;
 
             const command = new PublishCommand({
-                TopicArn: process.env.SNS_EMAIL_TOPIC_ARN,
+                TargetArn: process.env.SNS_EMAIL_TOPIC_ARN,
                 Message: notificationMessage,
-                Subject: "Confirmación de Riego - PlantApp",
-                MessageAttributes: {
-                    'uuid': {
-                        DataType: 'String',
-                        StringValue: message.uuid || 'default'
-                    }
-                }
+                Subject: "Confirmación de Riego - PlantApp"
             });
 
             console.log('Enviando notificación:', {

@@ -94,7 +94,7 @@ module "lambda" {
   dlq_arn = module.sqs.dlq_arn
   sqs_url = module.sqs.queue_url
   sqs_endpoint      = "https://vpce-${module.vpc.sqs_endpoint_id}.sqs.${var.region}.vpce.amazonaws.com"
-  sns_email_topic_arn = "mcornidez@itba.edu.ar"
+  sns_email_topic_arn = var.notification_email
   sqs_queue_arn = module.sqs.queue_arn
 
 }
@@ -129,7 +129,7 @@ module "sns" {
   source = "./sns"
   queue_arn = module.sqs.queue_arn
   labrole_arn       = data.aws_iam_role.labrole.arn
-  notification_email = "mcornidez@itba.edu.ar"
+  notification_email = var.notification_email
 }
 
 module "sqs" {
