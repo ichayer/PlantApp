@@ -30,5 +30,15 @@ locals {
       handler = "createPlantWatering.createPlantWatering"
       role    = var.labrole_arn
     }
+    "checkPlantsForWatering" = {
+      file    = "checkPlantsForWatering.js"
+      handler = "checkPlantsForWatering.checkPlantsForWatering"
+      role    = var.labrole_arn
+    }
+    "sendEmailNotification" = {
+      file    = "sendEmailNotification.js"
+      handler = "sendEmailNotification.sendEmailNotification"
+      role    = var.labrole_arn
+    }
   }
 }

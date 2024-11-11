@@ -33,3 +33,8 @@ variable "security_group_id" {
   description = "The security group ID for the Lambda functions"
   type        = string
 }
+
+variable "dlq_arn" {
+  description = "The ARN of the Dead Letter Queue"
+  type       = string
+}

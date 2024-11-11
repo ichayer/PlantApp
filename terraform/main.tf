@@ -90,6 +90,7 @@ module "lambda" {
   labrole_arn       = data.aws_iam_role.labrole.arn
   lambda_subnet_ids = module.vpc.lambda_subnet_ids
   security_group_id = module.security_groups.lambdas_sg_id
+  dlq_arn = module.sqs.dlq_arn
 }
 
 module "cognito" {
@@ -116,4 +117,13 @@ module "s3" {
   cognito_user_pool_id = module.cognito.user_pool_id
   cognito_client_id    = module.cognito.client_id
   region               = var.region
+}
+
+module "sns" {
+  source = "./sns"
+  queue_arn = module.sqs.queue_arn
+}
+
+module "sqs" {
+  source = "./sqs"
 }
