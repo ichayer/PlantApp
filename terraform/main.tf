@@ -15,6 +15,7 @@ module "vpc" {
   vpc_region          = var.region
   lambda_subnet_count = var.vpc_lambda_subnet_count
   rds_subnet_count    = var.vpc_rds_subnet_count
+  vpc_endpoints_sg_id = module.security_groups.vpc_endpoints_sg_id
 }
 
 module "security_groups" {
@@ -91,6 +92,11 @@ module "lambda" {
   lambda_subnet_ids = module.vpc.lambda_subnet_ids
   security_group_id = module.security_groups.lambdas_sg_id
   dlq_arn = module.sqs.dlq_arn
+  sqs_url = module.sqs.queue_url
+  sqs_endpoint      = "https://vpce-${module.vpc.sqs_endpoint_id}.sqs.${var.region}.vpce.amazonaws.com"
+  sns_email_topic_arn = "mcornidez@itba.edu.ar"
+  sqs_queue_arn = module.sqs.queue_arn
+
 }
 
 module "cognito" {
@@ -122,8 +128,11 @@ module "s3" {
 module "sns" {
   source = "./sns"
   queue_arn = module.sqs.queue_arn
+  labrole_arn       = data.aws_iam_role.labrole.arn
+  notification_email = "mcornidez@itba.edu.ar"
 }
 
 module "sqs" {
   source = "./sqs"
+  labrole_arn       = data.aws_iam_role.labrole.arn
 }

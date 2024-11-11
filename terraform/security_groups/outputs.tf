@@ -17,3 +17,7 @@ output "rds_sg_id" {
   description = "The ID of the RDS security group"
   value       = aws_security_group.planty_db_sg.id
 }
+
+output "vpc_endpoints_sg_id" {
+  value = aws_security_group.vpc_endpoints_sg.id
+}

@@ -32,3 +32,7 @@ output "lambda_subnet_ids" {
   value       = aws_db_subnet_group.lambda_subnet_group.subnet_ids
   description = "The IDs of the lambda subnets"
 }
+
+output "sqs_endpoint_id" {
+  value = aws_vpc_endpoint.sqs_endpoint.id
+}

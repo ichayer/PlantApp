@@ -19,6 +19,7 @@ resource "aws_lambda_function" "plant_functions" {
   handler       = each.value.handler
   runtime       = "nodejs18.x"
   filename      = "${path.root}/../backend/${each.value.file}.zip"
+  timeout       = 30
 
   environment {
     variables = {
@@ -27,6 +28,9 @@ resource "aws_lambda_function" "plant_functions" {
       DB_PASSWORD = var.db_password
       DB_HOST     = var.proxy_host
       DB_PORT     = var.db_port
+      SQS_QUEUE_URL = var.sqs_url
+      SQS_ENDPOINT  = var.sqs_endpoint
+      SNS_EMAIL_TOPIC_ARN = var.sns_email_topic_arn
     }
   }
 
@@ -38,4 +42,11 @@ resource "aws_lambda_function" "plant_functions" {
   dead_letter_config {
     target_arn = var.dlq_arn
   }
+}
+
+resource "aws_lambda_event_source_mapping" "sqs_trigger" {
+  event_source_arn = var.sqs_queue_arn
+  function_name    = aws_lambda_function.plant_functions["processWateringNotification"].arn
+  batch_size       = 10
+  enabled          = true
 }

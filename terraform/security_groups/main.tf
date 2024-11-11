@@ -87,3 +87,26 @@ resource "aws_security_group" "planty_db_sg" {
     create_before_destroy = true
   }
 }
+
+resource "aws_security_group" "vpc_endpoints_sg" {
+  vpc_id = var.vpc_id
+  name   = "vpc-endpoints-sg"
+
+  ingress {
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.lambdas_sg.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "vpc-endpoints-sg"
+  }
+}

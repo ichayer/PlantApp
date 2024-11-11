@@ -12,3 +12,7 @@ variable "rds_subnet_count" {
   description = "The number of subnets for RDS instances"
   type        = number
 }
+
+variable "vpc_endpoints_sg_id" {
+  type       = string
+}

@@ -30,14 +30,9 @@ locals {
       handler = "createPlantWatering.createPlantWatering"
       role    = var.labrole_arn
     }
-    "checkPlantsForWatering" = {
-      file    = "checkPlantsForWatering.js"
-      handler = "checkPlantsForWatering.checkPlantsForWatering"
-      role    = var.labrole_arn
-    }
-    "sendEmailNotification" = {
-      file    = "sendEmailNotification.js"
-      handler = "sendEmailNotification.sendEmailNotification"
+    "processWateringNotification" = {
+      file    = "processWateringNotification.js"
+      handler = "processWateringNotification.processWateringNotification"
       role    = var.labrole_arn
     }
   }

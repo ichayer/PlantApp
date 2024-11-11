@@ -1,6 +1,7 @@
 const PgConnection = require("postgresql-easy");
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const { PutCommand, DynamoDBDocumentClient } = require("@aws-sdk/lib-dynamodb");
+const { SQSClient, SendMessageCommand } = require("@aws-sdk/client-sqs");
 const jwt = require('jwt-decode');
 
 const pg = new PgConnection({
@@ -14,6 +15,7 @@ const pg = new PgConnection({
 
 const dynamoClient = new DynamoDBClient({});
 const dynamo = DynamoDBDocumentClient.from(dynamoClient);
+const sqs = new SQSClient({});
 
 async function createPlantWatering(event) {
     const token = event.headers.authorization;
@@ -45,6 +47,26 @@ async function createPlantWatering(event) {
     });
 
     const dynamoResponse = await dynamo.send(command);
+    console.log('Guardado en DynamoDB exitoso');
+
+    //Mensaje a SQS
+    const waterFrequencyDays = row["water_frequency_days"];
+    const nextWateringDate = new Date();
+    nextWateringDate.setDate(nextWateringDate.getDate() + waterFrequencyDays);
+
+    const message = {
+        plantId: plantId,
+        plantName: row["name"],
+        nextWateringDate: nextWateringDate.toISOString(),
+    };
+
+    const sqsCommand = new SendMessageCommand({
+        QueueUrl: process.env.SQS_QUEUE_URL,
+        MessageBody: JSON.stringify(message),
+    });
+
+    await sqs.send(sqsCommand);
+    console.log(`Mensaje enviado a SQS: ${JSON.stringify(message)}`);
 
     return {
         statusCode: 200
