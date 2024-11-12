@@ -59,8 +59,8 @@ export default function MyPlants() {
         const transformedData: Plant[] = data.map((item: any) => ({
           id: item.plantId,
           name: item.name,
-          image: placeHolderImagePath, // Set placeholder in case no image is provided
-          wateringFrequency: item.wateringFrequency || 7,
+          image: item.image || placeHolderImagePath, // Set placeholder in case no image is provided
+          wateringFrequency: item.waterFrequencyDays || 7,
           lastWatered: item.waterings.map((date: string) => new Date(date))[0],
           wateringHistory: item.waterings.map((date: string) => new Date(date)),
         }))
@@ -184,7 +184,7 @@ export default function MyPlants() {
           wateringHistory: [],
           lastWatered: new Date()
         }
-
+        await handleWaterPlant(addedPlant.id as number)
         setPlants([...plants, addedPlant])
         setIsAddPlantOpen(false)
         setNewPlant({ name: '', wateringFrequency: 7, image: placeHolderImagePath})
