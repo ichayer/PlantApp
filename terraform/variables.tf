@@ -45,3 +45,8 @@ variable "cognito_user_pool_domain" {
   description = "Cognito user pool domain"
   type        = string
 }
+
+# Email
+variable "notification_email"{
+  type = string
+}

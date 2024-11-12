@@ -94,7 +94,7 @@ module "lambda" {
   dlq_arn = module.sqs.dlq_arn
   sqs_url = module.sqs.queue_url
   sqs_endpoint      = "https://vpce-${module.vpc.sqs_endpoint_id}.sqs.${var.region}.vpce.amazonaws.com"
-  sns_email_topic_arn = var.notification_email
+  sns_email_topic_arn = module.sns.topic_arn
   sqs_queue_arn = module.sqs.queue_arn
 
 }
