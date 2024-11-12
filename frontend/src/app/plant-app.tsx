@@ -15,6 +15,7 @@ import { Input } from "src/components/ui/input"
 import { Label } from "src/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "src/components/ui/select"
 import React from 'react';
+import {handleImageUpload} from "../lib/imageService";
 
 type Plant = {
   id: number | null;
@@ -42,7 +43,7 @@ export default function MyPlants() {
     image: placeHolderImagePath
   })
 
-
+  const [imageByteArray, setImageByteArray] = useState<Uint8Array | null>(null);
 
   useEffect(() => {
     const fetchPlants = async () => {
@@ -156,12 +157,15 @@ export default function MyPlants() {
     event.preventDefault()
     const plantToAdd: PlantPost = {
       name: newPlant.name || '',
-      image: newPlant.image || placeHolderImagePath,
+      image: placeHolderImagePath,
       description: "default",
       waterFrequencyDays: newPlant.wateringFrequency || 7
     }
 
     try {
+      if (imageByteArray) {
+        plantToAdd.image = await handleImageUpload(imageByteArray) as string;
+      }
 
       const accessToken = sessionStorage.getItem("accessToken");
       const headers = {
@@ -179,7 +183,7 @@ export default function MyPlants() {
         const addedPlant: Plant = {
           id: data.plantId,
           name: newPlant.name || '',
-          image: newPlant.image || placeHolderImagePath,
+          image: plantToAdd.image,
           wateringFrequency: newPlant.wateringFrequency || 7,
           wateringHistory: [],
           lastWatered: new Date()
@@ -202,6 +206,27 @@ export default function MyPlants() {
       handleDeletePlant(plantId);
     }
   };
+
+  function handleFileChange(event: any) {
+      const file = event.target.files?.[0]
+      if (file) {
+        const reader = new FileReader()
+        reader.onloadend = () => {
+          const base64Data = reader.result as string;
+
+          setNewPlant({...newPlant, image: base64Data})
+
+          const byteString = atob(base64Data.split(",")[1]);
+          const byteArray = new Uint8Array(byteString.length);
+          for (let i = 0; i < byteString.length; i++) {
+            byteArray[i] = byteString.charCodeAt(i);
+          }
+
+          setImageByteArray(byteArray);
+        }
+        reader.readAsDataURL(file)
+      }
+  }
 
   return (
     <div className="container mx-auto p-4 bg-gradient-to-b from-green-50 to-green-100 min-h-screen">
@@ -279,16 +304,7 @@ export default function MyPlants() {
                           type="file"
                           accept="image/*"
                           className="hidden"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0]
-                            if (file) {
-                              const reader = new FileReader()
-                              reader.onloadend = () => {
-                                setNewPlant({...newPlant, image: reader.result as string})
-                              }
-                              reader.readAsDataURL(file)
-                            }
-                          }}
+                          onChange={handleFileChange}
                       />
                     </div>
                   </div>

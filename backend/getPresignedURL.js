@@ -7,7 +7,7 @@ const URL_EXPIRATION_SECONDS = 30000;
 
 async function getPresignedURL(event) {
   const randomID = parseInt(Math.random() * 10000000);
-  const Key = `${randomID}.mp3`;
+  const Key = `${randomID}.jpeg`;
 
   const s3Params = {
     Bucket: uploadBucket,
