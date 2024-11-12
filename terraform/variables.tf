@@ -46,11 +46,6 @@ variable "cognito_user_pool_domain" {
   type        = string
 }
 
-# Email
-variable "notification_email"{
-  type = string
-}
-
 # S3 images parameters
 variable "s3_images_bucket_name" {
   description = "S3 images bucket name"

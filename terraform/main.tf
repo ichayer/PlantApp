@@ -107,6 +107,7 @@ module "lambda" {
 module "cognito" {
   source           = "./cognito"
   user_pool_domain = var.cognito_user_pool_domain
+  suscribe_user_email_lambda = module.lambda.suscribeUserEmail["create"]
 }
 
 module "api_gw" {
@@ -135,7 +136,6 @@ module "sns" {
   source = "./sns"
   queue_arn = module.sqs.queue_arn
   labrole_arn       = data.aws_iam_role.labrole.arn
-  notification_email = var.notification_email
 }
 
 module "sqs" {

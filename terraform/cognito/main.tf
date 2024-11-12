@@ -14,8 +14,20 @@ resource "aws_cognito_user_pool" "plant_app_pool" {
   }
 
   auto_verified_attributes = ["email"]
+
+  lambda_config {
+    post_confirmation = var.suscribe_user_email_lambda.invoke_arn
+  }
 }
 
+# Authorize cognito to call lambda
+resource "aws_lambda_permission" "allow_cognito_invoke" {
+  statement_id  = "AllowExecutionFromCognito"
+  action        = "lambda:InvokeFunction"
+  function_name = var.suscribe_user_email_lambda.function_name
+  principal     = "cognito-idp.amazonaws.com"
+  source_arn    = aws_cognito_user_pool.plant_app_pool.arn
+}
 
 resource "aws_cognito_user_pool_domain" "main" {
   domain       = var.user_pool_domain

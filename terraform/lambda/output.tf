@@ -45,3 +45,12 @@ output "getPresignedURL" {
     }
   }
 }
+
+output "suscribeUserEmail" {
+  value = {
+    create = {
+      function_name = aws_lambda_function.plant_functions["suscribeUserEmail"].function_name
+      invoke_arn    = aws_lambda_function.plant_functions["suscribeUserEmail"].arn
+    }
+  }
+}

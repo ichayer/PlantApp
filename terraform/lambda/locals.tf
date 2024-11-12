@@ -40,5 +40,10 @@ locals {
       handler = "getPresignedURL.getPresignedURL"
       role    = var.labrole_arn
     }
+    "suscribeUserEmail" = {
+      file    = "suscribeUserEmail.js"
+      handler = "suscribeUserEmail.suscribeUserEmail"
+      role    = var.labrole_arn
+    }
   }
 }
