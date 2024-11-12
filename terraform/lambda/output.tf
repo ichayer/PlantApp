@@ -36,3 +36,12 @@ output "plantsByIdWaterings" {
     }
   }
 }
+
+output "getPresignedURL" {
+  value = {
+    get = {
+      function_name = aws_lambda_function.plant_functions["getPresignedURL"].function_name
+      invoke_arn    = aws_lambda_function.plant_functions["getPresignedURL"].invoke_arn
+    }
+  }
+}

@@ -46,6 +46,13 @@ variable "create_plant_watering" {
   description = "The function name and invocation ARN of the POST /plants/{id}/waterings lambda"
 }
 
+variable "get_presigned_url" {
+  type = object({
+    function_name = string
+    invoke_arn    = string
+  })
+  description = "The function name and invocation ARN of the GET /getPresignedURL lambda"
+}
 
 variable "cognito_client_id" {
   type = string

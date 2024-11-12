@@ -23,6 +23,11 @@ module "security_groups" {
   vpc_id = module.vpc.vpc_id
 }
 
+module "s3_images" {
+  source = "./s3_images"
+  bucket_name = var.s3_images_bucket_name
+}
+
 module "rds" {
   source                         = "./rds"
   depends_on                     = [null_resource.npm_install_backend]
@@ -96,7 +101,7 @@ module "lambda" {
   sqs_endpoint      = "https://vpce-${module.vpc.sqs_endpoint_id}.sqs.${var.region}.vpce.amazonaws.com"
   sns_email_topic_arn = module.sns.topic_arn
   sqs_queue_arn = module.sqs.queue_arn
-
+  images_bucket_name = var.s3_images_bucket_name
 }
 
 module "cognito" {
@@ -112,6 +117,7 @@ module "api_gw" {
   delete_plant_by_id    = module.lambda.plantsById["delete"]
   get_plant_waterings   = module.lambda.plantsByIdWaterings["get"]
   create_plant_watering = module.lambda.plantsByIdWaterings["create"]
+  get_presigned_url     = module.lambda.getPresignedURL["get"]
   cognito_auth_endpoint = module.cognito.auth_endpoint
   cognito_client_id     = module.cognito.client_id
 }

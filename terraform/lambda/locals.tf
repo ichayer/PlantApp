@@ -35,5 +35,10 @@ locals {
       handler = "processWateringNotification.processWateringNotification"
       role    = var.labrole_arn
     }
+    "getPresignedURL" = {
+      file    = "getPresignedURL.js"
+      handler = "getPresignedURL.getPresignedURL"
+      role    = var.labrole_arn
+    }
   }
 }

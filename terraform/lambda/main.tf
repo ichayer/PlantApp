@@ -31,6 +31,7 @@ resource "aws_lambda_function" "plant_functions" {
       SQS_QUEUE_URL = var.sqs_url
       SQS_ENDPOINT  = var.sqs_endpoint
       SNS_EMAIL_TOPIC_ARN = var.sns_email_topic_arn
+      S3_IMAGES_BUCKET_NAME = var.images_bucket_name
     }
   }
 

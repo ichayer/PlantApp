@@ -77,6 +77,14 @@ resource "aws_apigatewayv2_route" "create_plant_waterings_route" {
   authorizer_id = aws_apigatewayv2_authorizer.auth.id
 }
 
+resource "aws_apigatewayv2_route" "get_presigned_url_route" {
+  api_id    = aws_apigatewayv2_api.planty_http_api.id
+  route_key = "GET /getPresignedURL"
+  target    = "integrations/${aws_apigatewayv2_integration.get_presigned_url_integration.id}"
+  authorization_type = "JWT"
+  authorizer_id = aws_apigatewayv2_authorizer.auth.id
+}
+
 resource "aws_apigatewayv2_integration" "get_plants_integration" {
   api_id                 = aws_apigatewayv2_api.planty_http_api.id
   integration_type       = "AWS_PROXY"
@@ -131,6 +139,15 @@ resource "aws_apigatewayv2_integration" "create_plant_watering_integration" {
   payload_format_version = "2.0"
 }
 
+resource "aws_apigatewayv2_integration" "get_presigned_url_integration" {
+  api_id                 = aws_apigatewayv2_api.planty_http_api.id
+  integration_type       = "AWS_PROXY"
+  integration_uri        = var.get_presigned_url.invoke_arn
+  connection_type        = "INTERNET"
+  integration_method     = "POST"
+  payload_format_version = "2.0"
+}
+
 resource "aws_lambda_permission" "get_plants_lambda_permission" {
   statement_id  = "AllowAPIGatewayInvocationPlants"
   action        = "lambda:InvokeFunction"
@@ -175,6 +192,14 @@ resource "aws_lambda_permission" "create_plant_watering_lambda_permission" {
   statement_id  = "AllowAPIGatewayInvocationPlants"
   action        = "lambda:InvokeFunction"
   function_name = var.create_plant_watering.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.planty_http_api.execution_arn}/*/*"
+}
+
+resource "aws_lambda_permission" "get_presigned_url_permission" {
+  statement_id  = "AllowAPIGatewayInvocationPlants"
+  action        = "lambda:InvokeFunction"
+  function_name = var.get_presigned_url.function_name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.planty_http_api.execution_arn}/*/*"
 }

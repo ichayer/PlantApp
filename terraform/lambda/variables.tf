@@ -58,3 +58,8 @@ variable "sqs_queue_arn" {
   description = "ARN of the SQS queue for notifications"
   type        = string
 }
+
+variable "images_bucket_name" {
+  description = "S3 images bucket name"
+  type        = string
+}
