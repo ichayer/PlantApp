@@ -54,3 +54,12 @@ output "suscribeUserEmail" {
     }
   }
 }
+
+output "processWateringNotification" {
+  value = {
+    create = {
+      function_name = aws_lambda_function.plant_functions["processWateringNotification"].function_name
+      invoke_arn    = aws_lambda_function.plant_functions["processWateringNotification"].arn
+    }
+  }
+}

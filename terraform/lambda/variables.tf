@@ -34,28 +34,8 @@ variable "security_group_id" {
   type        = string
 }
 
-variable "sqs_url" {
-  description = "The URL of the SQS Queue"
-  type       = string
-}
-
-variable "dlq_arn" {
-  description = "The ARN of the Dead Letter Queue"
-  type       = string
-}
-
-variable "sqs_endpoint" {
-  description = "The VPC endpoint URL for SQS"
-  type        = string
-}
-
 variable "sns_email_topic_arn" {
   description = "ARN of the SNS topic for notifications"
-  type        = string
-}
-
-variable "sqs_queue_arn" {
-  description = "ARN of the SQS queue for notifications"
   type        = string
 }
 

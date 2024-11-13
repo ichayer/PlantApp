@@ -96,11 +96,7 @@ module "lambda" {
   labrole_arn       = data.aws_iam_role.labrole.arn
   lambda_subnet_ids = module.vpc.lambda_subnet_ids
   security_group_id = module.security_groups.lambdas_sg_id
-  dlq_arn = module.sqs.dlq_arn
-  sqs_url = module.sqs.queue_url
-  sqs_endpoint      = "https://vpce-${module.vpc.sqs_endpoint_id}.sqs.${var.region}.vpce.amazonaws.com"
   sns_email_topic_arn = module.sns.topic_arn
-  sqs_queue_arn = module.sqs.queue_arn
   images_bucket_name = var.s3_images_bucket_name
 }
 
@@ -134,11 +130,11 @@ module "s3" {
 
 module "sns" {
   source = "./sns"
-  queue_arn = module.sqs.queue_arn
   labrole_arn       = data.aws_iam_role.labrole.arn
 }
 
-module "sqs" {
-  source = "./sqs"
-  labrole_arn       = data.aws_iam_role.labrole.arn
+module "event_bridge" {
+  source = "./event_bridge"
+  lambda_arn       = module.lambda.processWateringNotification.invoke_arn
+  lambda_name = module.lambda.processWateringNotification.function_name
 }

@@ -28,8 +28,6 @@ resource "aws_lambda_function" "plant_functions" {
       DB_PASSWORD = var.db_password
       DB_HOST     = var.proxy_host
       DB_PORT     = var.db_port
-      SQS_QUEUE_URL = var.sqs_url
-      SQS_ENDPOINT  = var.sqs_endpoint
       SNS_EMAIL_TOPIC_ARN = var.sns_email_topic_arn
       S3_IMAGES_BUCKET_NAME = var.images_bucket_name
     }
@@ -45,9 +43,3 @@ resource "aws_lambda_function" "plant_functions" {
   }
 }
 
-resource "aws_lambda_event_source_mapping" "sqs_trigger" {
-  event_source_arn = var.sqs_queue_arn
-  function_name    = aws_lambda_function.plant_functions["processWateringNotification"].arn
-  batch_size       = 10
-  enabled          = true
-}

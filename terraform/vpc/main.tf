@@ -101,19 +101,6 @@ resource "aws_vpc_endpoint" "dynamodb_endpoint" {
   }
 }
 
-resource "aws_vpc_endpoint" "sqs_endpoint" {
-  vpc_id              = aws_vpc.plantapp_vpc.id
-  service_name        = "com.amazonaws.${var.vpc_region}.sqs"
-  vpc_endpoint_type   = "Interface"
-  subnet_ids          = aws_subnet.lambda_subnet[*].id
-  security_group_ids  = [var.vpc_endpoints_sg_id]
-  private_dns_enabled = true
-
-  tags = {
-    Name = "${local.vpc_name}-sqs-endpoint"
-  }
-}
-
 resource "aws_vpc_endpoint" "sns_endpoint" {
   vpc_id              = aws_vpc.plantapp_vpc.id
   service_name        = "com.amazonaws.${var.vpc_region}.sns"
