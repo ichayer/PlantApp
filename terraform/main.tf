@@ -135,6 +135,6 @@ module "sns" {
 
 module "event_bridge" {
   source = "./event_bridge"
-  lambda_arn       = module.lambda.processWateringNotification.invoke_arn
-  lambda_name = module.lambda.processWateringNotification.function_name
+  lambda_arn       = module.lambda.processWateringNotification["create"].invoke_arn
+  lambda_name = module.lambda.processWateringNotification["create"].function_name
 }
