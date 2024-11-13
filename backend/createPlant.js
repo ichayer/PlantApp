@@ -25,7 +25,8 @@ async function createPlant(event) {
         name: body.name,
         description: body.description,
         water_frequency_days: body.waterFrequencyDays,
-        uuid: decoded.username
+        uuid: decoded.username,
+        image: body.image ? body.image : null
     });
 
     return {
