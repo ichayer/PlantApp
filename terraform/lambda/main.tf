@@ -37,9 +37,5 @@ resource "aws_lambda_function" "plant_functions" {
     security_group_ids = [var.security_group_id]
     subnet_ids         = var.lambda_subnet_ids
   }
-
-  dead_letter_config {
-    target_arn = var.dlq_arn
-  }
 }
 
